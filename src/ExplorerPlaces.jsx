@@ -1,0 +1,6 @@
+import React,{useMemo} from 'react';
+import {Html} from '@react-three/drei';
+import {ArrowUpRight} from 'lucide-react';
+import {explorerPlaces,bearing} from './data/explorerPlaces';
+export default function ExplorerPlaces({map,onSelect}){const {inside}=useMemo(()=>explorerPlaces(map),[map]);return <>{inside.map(place=><group key={place.id} position={[place.x,.08,place.z]}><Html center zIndexRange={[4,1]}><button className="explorer-place local-pin" aria-label={'Ver ficha de '+place.name} onPointerDown={e=>e.stopPropagation()} onClick={e=>{e.stopPropagation();onSelect?.(place)}}><span className="explorer-place-dot"/><span>{place.name}<small>{place.category} · IAU/USGS</small></span></button></Html></group>)}</>}
+export function NearbyPlaces({map,onSelect}){const {nearby}=useMemo(()=>explorerPlaces(map),[map]);return <div className="nearby-places" aria-label="Lugares oficiales cercanos"><p>Lugares cercanos <small>Fuera del área cargada</small></p>{nearby.map(place=><button key={place.id} onClick={()=>onSelect?.(place)} aria-label={'Ver ficha de '+place.name}><span className="nearby-bearing" style={{'--bearing':bearing(map.site,place)+'deg'}}>↑</span><span>{place.name}<small>{(place.distance/1000).toLocaleString('es-MX',{maximumFractionDigits:0})} km · centro cartográfico</small></span><ArrowUpRight size={14}/></button>)}</div>}

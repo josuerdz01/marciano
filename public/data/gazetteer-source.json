@@ -1,0 +1,10 @@
+{
+  "source": "https://asc-planetarynames-data.s3.us-west-2.amazonaws.com/MARS_nomenclature_center_pts.kmz",
+  "catalog": "https://planetarynames.wr.usgs.gov/GIS_Downloads",
+  "retrievedAt": "2026-11-14",
+  "network": "MDIM 2.1",
+  "coordinates": "East longitude, planetocentric latitude",
+  "filter": "Adopted by IAU; deduplicated by Feature ID",
+  "count": 2054,
+  "kmzSha256": "b4f78d69e3c97de5f2f296a8fb008c3367f7d682ac92c7244329b9a8e186ec3a"
+}

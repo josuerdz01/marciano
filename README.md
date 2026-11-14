@@ -73,3 +73,9 @@ El panel Misión permite situar una base A, un destino B y una parada científic
 El resumen calcula ida y regreso por las mismas celdas, trabajo científico y margen tras una reserva de tiempo. Ritmo (2 km/h), disponibilidad (240 min), reserva (25 %) y trabajo (20 min) son valores iniciales de demostración editables, sin procedencia fisiológica ni certificación NASA. Fórmula: minutos de viaje = 2 × distancia de ida / ritmo × 60; total = viaje + trabajo; disponible = presupuesto × (1 − reserva/100). No modela esfuerzo ni recursos del traje. El coste A* por pendiente es simétrico; ascenso y descenso se intercambian al volver.
 
 CTX y MOLA/HRSC son observaciones históricas; pendientes y recorridos son derivados. Clima, radiación, suelo y obstáculos siguen sin integrar y se indican explícitamente. No se generan mediciones actuales ni alertas radiológicas ficticias. CRISM permanece como fuente candidata, pendiente de cobertura y procesamiento. El objetivo es un prototipo explicable de planificación, no navegación operacional.
+
+### Catálogo de puntos en el explorador
+
+El explorador integra 2,054 accidentes geográficos aprobados por IAU, derivados del KML oficial de centros cartográficos USGS (MDIM 2.1). Se filtran registros adoptados y se elimina un duplicado de Feature ID del archivo original. La procedencia, fecha y SHA-256 del KMZ se conservan en `public/data/gazetteer-source.json`.
+
+Los centros dentro de la ventana local se dibujan como pins seleccionables en coordenadas reales. Los tres centros más cercanos que quedan fuera se muestran aparte, con distancia geodésica y rumbo desde el centro del sitio (norte arriba); no se desplazan artificialmente al terreno visible. La búsqueda consulta todo el catálogo y limita a 30 resultados por consulta. Un centro representa una referencia de nomenclatura, no una posición de misión ni la geometría completa del accidente.

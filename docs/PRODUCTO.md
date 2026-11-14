@@ -41,3 +41,7 @@ Separar riesgo mecánico de exposición radiológica. La radiación depende tamb
 - Introducir radiación únicamente tras seleccionar y validar datos/modelo.
 
 Fuentes futuras deben entrar mediante adaptadores, separados del estado y los componentes. El frontend no almacenará credenciales. Datos grandes: tiles y procesamiento previo, no GeoTIFF global completo en el navegador.
+
+## Integración realizada: Mars Trek WMTS
+
+Ya están conectados Viking VIS color, MOLA/HRSC color y sombreado, THEMIS diurno y nocturno. El selector lee las capacidades de cada servicio y compone teselas reales en la matriz global 2. La visualización de 2048 × 1024 px no equivale a la resolución nativa indicada en el producto. THEMIS tiene cobertura aproximada ±65° y no aporta aquí temperaturas numéricas ni datos actuales. El detalle adaptativo al hacer zoom y el DEM geométrico quedan pendientes.

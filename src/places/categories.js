@@ -17,5 +17,5 @@ export const placeCategories=[
 ];
 const groups={Cráter:'crater',Catena:'crater',Mons:'mountain',Montes:'mountain',Tholus:'mountain',Collis:'mountain','Sistema de cañones':'canyon',Planicie:'plain',Vallis:'valley',Serpens:'valley',Chasma:'canyon',Planum:'plain',Planitia:'plain',Mensa:'plain',Vastitas:'plain',Palus:'plain',Unda:'dune',Rupes:'scarp',Scopulus:'scarp',Dorsum:'scarp',Patera:'depression',Cavus:'depression',Fossa:'chaos',Sulcus:'chaos',Chaos:'chaos',Labyrinthus:'chaos'};
 const types=Object.fromEntries(placeCategories.map(c=>[c.id,{...c,source:descriptorSource}])),volcanoes=Object.fromEntries(Object.entries(volcanoSources).map(([name,source])=>[name,{...types.volcano,source}]));
-export function placeType(place){return volcanoes[place.name]||(place.featureId===6288?{...types.canyon,source:tharsis}:types[groups[place.category]||'region'])}
+export function placeType(place){if(place.kind==='landing')return{id:'landing',label:'Aterrizajes',singular:'Sitio de aterrizaje',icon:'Rocket',source:place.source};return volcanoes[place.name]||(place.featureId===6288?{...types.canyon,source:tharsis}:types[groups[place.category]||'region'])}
 export function matchesCategory(place,category){return !category||category==='all'||placeType(place).id===category}

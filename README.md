@@ -179,3 +179,13 @@ Flujo rápido: «Elegir destino» fija A en la posición actual, muestra «Elegi
 La selección sobre el contexto global fuera del DEM no navega a otra región ni borra A: se informa que el punto no tiene datos utilizables. Se preservan las validaciones numéricas A* y NoData. Los puntos se ajustan a centros de celda; la animación no certifica transitabilidad física de un vehículo real.
 
 QA de esta entrega: 66 pruebas aprobadas y compilación correcta. Se verificaron en navegador A automático → B → Ir, A manual → B automático, indicación junto al cursor, Escape, inicio del recorrido, pausa/reanudación y llegada. Una ruta de 4.45 km se reanudó desde ~20.1289° S, 57.6925° O sin regresar a A. Se observaron cambios de cabeceo/balanceo al avanzar y una señal de antena que pasó por intensidad 1.000 durante movimiento y 0.000 al detenerse. Los controles de simulación permanecen visibles sin abrir el panel lateral.
+
+### Navegación directa y sitios de aterrizaje
+
+En Explorar, seleccionar una etiqueta geográfica o un resultado del buscador dirige directamente a esa zona, sin abrir una ficha intermedia. Seleccionar de nuevo el sitio activo recupera su encuadre local. El cambio cancela cualquier planificación pendiente.
+
+Planeta muestra exclusivamente diez sitios históricos de aterrizaje: Viking 1/2, Pathfinder, Spirit, Opportunity, Phoenix, Curiosity, InSight, Perseverance y Zhurong. Las coordenadas y referencias individuales están en `src/data/landingSites.js`; se distinguen de centros de cráteres, posiciones actuales y propuestas futuras. Sus fuentes incluyen NASA/NTRS, PDS Geosciences y las publicaciones de localización de Perseverance, InSight y Zhurong. El filtro de accidentes geográficos de Explorar no oculta estos sitios en Planeta.
+
+El rover se renderiza en una capa transparente con la misma cámara, por encima de las etiquetas del mapa (`z-index: 5`) y sin interceptar eventos del puntero. Conserva suspensión, iluminación y fundido entre vistas; los controles de interfaz mantienen su prioridad. Las ventanas compatibles con la ortoimagen de Jezero pueden reducirse a 0.25° cerca del borde, permitiendo utilizar el DEM de 20 m en el aterrizaje real de Perseverance.
+
+QA: 69 pruebas aprobadas y compilación correcta. Se verificaron en navegador los diez marcadores de Planeta, el viaje desde Perseverance al DEM de 20 m y el clic directo en Belva en Explorar. En Belva se confirmó visualmente que el rover aparece encima de su etiqueta y que la capa tiene `pointer-events: none`.

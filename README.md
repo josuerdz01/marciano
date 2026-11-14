@@ -60,7 +60,7 @@ Explorar sigue siendo una ventana local, no un mapa infinito de todo Marte. Ahor
 
 ### Exploración de escritorio y lugares
 
-La vista cenital mantiene el mapa a viewport completo. El panel se superpone con vidrio verde (desenfoque, saturación, reflejo interior y sombra adaptados del material de Sobre). La búsqueda reúne 2,054 centros cartográficos oficiales IAU/USGS; las fichas muestran coordenadas, procedencia, distancia a Jezero y disponibilidad del DEM integrado. Los mismos puntos se proyectan sobre el explorador únicamente cuando están dentro de la ventana cargada y tienen imagen. Seleccionar una etiqueta abre su ficha; no cambia la ruta ni representa la posición de una misión.
+La vista cenital mantiene el mapa a viewport completo. El panel se superpone con vidrio verde (desenfoque, saturación, reflejo interior y sombra adaptados del material de Sobre). La búsqueda reúne 2,054 centros cartográficos oficiales IAU/USGS; las fichas muestran coordenadas, procedencia, distancia a Jezero y disponibilidad del DEM integrado. Los mismos puntos se proyectan sobre el explorador cuando están dentro de la ventana cargada. Seleccionar una etiqueta abre su ficha; no cambia la ruta ni representa la posición de una misión.
 
 La introducción, el planeta y el mapa comparten un único Canvas. El recorrido inicial usa una curva continua de cámara y objetivo, y el cambio al mapa interpola cámara y opacidad sin una cortina opaca. Se respeta movimiento reducido. Las pruebas de movimiento verifican continuidad y coincidencia de encuadres finales; la comprobación visual principal se realizó en escritorio a 1440 × 900.
 
@@ -78,7 +78,7 @@ CTX y MOLA/HRSC son observaciones históricas; pendientes y recorridos son deriv
 
 El explorador integra 2,054 accidentes geográficos aprobados por IAU, derivados del KML oficial de centros cartográficos USGS (MDIM 2.1). Se filtran registros adoptados y se elimina un duplicado de Feature ID del archivo original. La procedencia, fecha y SHA-256 del KMZ se conservan en `public/data/gazetteer-source.json`.
 
-Los centros dentro de la ventana local se dibujan como pins seleccionables en coordenadas reales. Los tres centros más cercanos que quedan fuera se muestran aparte, con distancia geodésica y rumbo desde el centro del sitio (norte arriba); no se desplazan artificialmente al terreno visible. La búsqueda consulta todo el catálogo y limita a 30 resultados por consulta. Un centro representa una referencia de nomenclatura, no una posición de misión ni la geometría completa del accidente.
+Los centros dentro de la ventana local se dibujan como pins seleccionables en coordenadas reales. Los centros fuera de la ventana se encuentran desde la búsqueda; no se desplazan artificialmente al terreno visible. La búsqueda consulta todo el catálogo y limita a 30 resultados por consulta. Un centro representa una referencia de nomenclatura, no una posición de misión ni la geometría completa del accidente.
 
 ### Geología USGS · Tanaka et al. (2014)
 
@@ -117,3 +117,9 @@ Optimización del producto global: se verificó que el GeoTIFF oficial utiliza I
 Verificación adicional: 729 muestras del lector remoto optimizado coincidieron exactamente con el recorte regional con SHA-256. La cuadrícula enviada al worker contiene sólo coordenadas y arrays numéricos; las texturas y funciones de representación permanecen fuera del mensaje transferido.
 
 El cálculo utiliza un worker y, si un navegador integrado demora su ejecución, recurre al mismo solver para áreas acotadas después de 2.5 s. Cambiar de mapa o parámetros invalida la generación de cálculo y cancela el trabajo anterior; una respuesta tardía no puede reemplazar una misión nueva.
+
+### Marcadores y textura compartidos
+
+Planeta y Explorar reutilizan el mismo componente de marcador: cápsula oscura, punto verde y nombre. Los puntos del explorador se superponen en sus coordenadas sobre el terreno, sin ficha secundaria ni línea vertical. El clic abre la ficha del lugar. Se retiró la tarjeta flotante de lugares fuera del área.
+
+Un único estado de textura y catálogo gobierna ambas vistas y persiste en el navegador. Incluye CTX en el globo (mosaico global de menor resolución verificado contra tileInfo Esri) y CTX detallado en el explorador, junto con Viking, MOLA/HRSC y THEMIS. Cambiar desde cualquiera de las vistas conserva la selección al pasar a la otra. Las vistas derivadas del DEM permanecen como herramientas locales; seleccionar una textura orbital activa de nuevo Imagen orbital.

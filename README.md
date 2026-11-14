@@ -49,3 +49,11 @@ Verificación geométrica: `node --test`.
 La pestaña **Ruta** permite elegir A/B sobre la región del enlace actual (-57.7057°, -20.1489°), calcular alternativas de distancia y pendiente, consultar métricas/perfil y animar el rover hasta B. Usa elevación numérica USGS MOLA/HRSC v2 de cuadrícula nominal 200 m, distribuida como recorte con atribución y hash; no usa colores de una textura para inferir alturas. El cálculo está limitado al recorte y cobertura local disponible y no valida peligros pequeños.
 
 [Implementación, APIs y tecnologías](docs/IMPLEMENTACION-RUTAS.md) · [Atribución del DEM](public/data/ATTRIBUTION.md).
+
+## Lugares oficiales y capas locales
+
+Planeta muestra Olympus Mons, Valles Marineris, Jezero, Gale y Hellas Planitia, con nombres y centros cartográficos del Gazetteer IAU/USGS (red MDIM 2.1, latitud planetocéntrica y longitud este normalizada). Cada lugar enlaza su ficha. Son centros de accidentes geográficos, no coordenadas de aterrizaje de misiones. Los marcadores del hemisferio oculto se esconden y todos los lugares están disponibles en Mapa → Lugares conocidos. Se pueden ocultar desde el panel.
+
+Al seleccionar un punto, la cámara orbita hacia él y se acerca; al terminar el vuelo y la carga CTX abre la vista local. Respeta movimiento reducido. La lista oficial se concentra en `src/data/landmarks.js` y su correspondencia con las UV de la esfera tiene pruebas geométricas.
+
+Explorar sigue siendo una ventana local, no un mapa infinito de todo Marte. Ahora permite alternar CTX, Viking, relieve MOLA/HRSC en color/grises y THEMIS día/noche: recorta teselas WMTS a la misma extensión local y muestra su fuente y resolución. Los datos de pendiente/rutas y la máscara de cobertura CTX no cambian al cambiar la textura. El recorte numérico para A–B sigue limitado a la región integrada; visitar un lugar oficial no implica que ya tenga DEM de rutas disponible.

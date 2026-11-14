@@ -57,3 +57,11 @@ Planeta muestra Olympus Mons, Valles Marineris, Jezero, Gale y Hellas Planitia, 
 Al seleccionar un punto, la cámara orbita hacia él y se acerca; al terminar el vuelo y la carga CTX abre la vista local. Respeta movimiento reducido. La lista oficial se concentra en `src/data/landmarks.js` y su correspondencia con las UV de la esfera tiene pruebas geométricas.
 
 Explorar sigue siendo una ventana local, no un mapa infinito de todo Marte. Ahora permite alternar CTX, Viking, relieve MOLA/HRSC en color/grises y THEMIS día/noche: recorta teselas WMTS a la misma extensión local y muestra su fuente y resolución. Los datos de pendiente/rutas y la máscara de cobertura CTX no cambian al cambiar la textura. El recorte numérico para A–B sigue limitado a la región integrada; visitar un lugar oficial no implica que ya tenga DEM de rutas disponible.
+
+### Exploración de escritorio y lugares
+
+La vista cenital mantiene el mapa a viewport completo. El panel se superpone con vidrio verde (desenfoque, saturación, reflejo interior y sombra adaptados del material de Sobre). La búsqueda reúne cinco centros cartográficos oficiales IAU/USGS; las fichas muestran coordenadas, procedencia, distancia a Jezero y disponibilidad del DEM integrado. Los mismos puntos se proyectan sobre el explorador únicamente cuando están dentro de la ventana cargada y tienen imagen. Seleccionar una etiqueta abre su ficha; no cambia la ruta ni representa la posición de una misión.
+
+La introducción, el planeta y el mapa comparten un único Canvas. El recorrido inicial usa una curva continua de cámara y objetivo, y el cambio al mapa interpola cámara y opacidad sin una cortina opaca. Se respeta movimiento reducido. Las pruebas de movimiento verifican continuidad y coincidencia de encuadres finales; la comprobación visual principal se realizó en escritorio a 1440 × 900.
+
+La cobertura del explorador sigue siendo una ventana local de 3 × 3 teselas; no es todavía un mapa global con carga continua. Los cinco lugares están disponibles desde búsqueda aunque queden fuera de esa ventana.

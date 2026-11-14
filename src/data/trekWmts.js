@@ -2,14 +2,14 @@ import {CanvasTexture,SRGBColorSpace} from 'three';
 const WMTS='http://www.opengis.net/wmts/1.0',OWS='http://www.opengis.net/ows/1.1';
 const element=(node,ns,name)=>node.getElementsByTagNameNS(ns,name)[0];
 const text=(node,ns,name)=>element(node,ns,name)?.textContent.trim();
-export function parseCapabilities(xml) {
+export function parseCapabilities(xml,level='2') {
  const doc=new DOMParser().parseFromString(xml,'application/xml');
  if(doc.querySelector('parsererror'))throw new Error('Metadatos WMTS inválidos.');
  const layer=element(doc,WMTS,'Layer');
  const resource=[...layer.getElementsByTagNameNS(WMTS,'ResourceURL')].find(x=>x.getAttribute('resourceType')==='tile');
  const matrixSetId=text(layer,WMTS,'TileMatrixSet');
  const matrixSet=[...doc.getElementsByTagNameNS(WMTS,'TileMatrixSet')].find(x=>text(x,OWS,'Identifier')===matrixSetId);
- const matrix=[...matrixSet.getElementsByTagNameNS(WMTS,'TileMatrix')].find(x=>text(x,OWS,'Identifier')==='2');
+ const matrix=[...matrixSet.getElementsByTagNameNS(WMTS,'TileMatrix')].find(x=>text(x,OWS,'Identifier')===level);
  if(!resource||!matrix)throw new Error('El servicio no ofrece la matriz global requerida.');
  const top=text(matrix,WMTS,'TopLeftCorner').split(/\s+/).map(Number);
  const width=Number(text(matrix,WMTS,'MatrixWidth')),height=Number(text(matrix,WMTS,'MatrixHeight'));

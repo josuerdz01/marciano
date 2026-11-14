@@ -1,0 +1,17 @@
+import React, { Suspense, useMemo, useRef, useState } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useTexture, Line } from '@react-three/drei';
+import * as THREE from 'three';
+const ease=t=>t*t*(3-2*t);
+const clamp=t=>Math.max(0,Math.min(1,t));
+function Journey({onComplete,onChapter}) {
+ const start=useRef(null), galaxy=useRef(),system=useRef(),lastChapter=useRef(-1);
+ const texture=useTexture('/textures/mars.jpg'); texture.colorSpace=THREE.SRGBColorSpace;
+ const stars=useMemo(()=>{const a=new Float32Array(10000*3);let seed=23;const rand=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};for(let i=0;i<10000;i++){const r=Math.pow(rand(),.65)*13,arm=i%4,angle=r*.75+arm*Math.PI/2+(rand()-.5)*.65;a[i*3]=Math.cos(angle)*r;a[i*3+1]=(rand()-.5)*(.3+r*.035);a[i*3+2]=Math.sin(angle)*r;}return a},[]);
+ useFrame(({clock,camera})=>{if(start.current===null)start.current=clock.elapsedTime;const t=clock.elapsedTime-start.current;const chapter=t<2.5?0:t<5?1:2;if(lastChapter.current!==chapter){lastChapter.current=chapter;onChapter(chapter)}
+ const reveal=ease(clamp((t-2)/1.5));galaxy.current.visible=t<3.5;galaxy.current.scale.setScalar(1+reveal*12);galaxy.current.rotation.y=t*.025;galaxy.current.children[0].material.opacity=1-reveal;
+ system.current.visible=t>2;const travel=ease(clamp((t-4)/4));camera.position.set(6*travel,18*(1-travel),30*(1-travel)+(6.3/Math.min(1,camera.aspect))*travel);camera.lookAt(6*travel,0,0);if(t>=8.2)onComplete();
+ });
+ return <><color attach="background" args={['#090d0c']}/><ambientLight intensity={1.4}/><directionalLight position={[-4,5,8]} intensity={2.4}/><group ref={galaxy}><points><bufferGeometry><bufferAttribute attach="attributes-position" args={[stars,3]}/></bufferGeometry><pointsMaterial color="#dfdfc4" size={.035} transparent opacity={1} depthWrite={false}/></points><mesh><sphereGeometry args={[.24,24,24]}/><meshBasicMaterial color="#f4e5b8"/></mesh></group><group ref={system} visible={false}><mesh><sphereGeometry args={[.65,32,24]}/><meshBasicMaterial color="#efdaa0"/></mesh>{[1.6,2.7,4,6,9,12].map((r,i)=><React.Fragment key={r}><Line points={Array.from({length:129},(_,j)=>[Math.cos(j/128*Math.PI*2)*r,0,Math.sin(j/128*Math.PI*2)*r])} color="#687369" transparent opacity={.28} lineWidth={.6}/>{i!==3&&<mesh position={[Math.cos(i*2)*r,0,Math.sin(i*2)*r]}><sphereGeometry args={[i<3?.12:.3,20,20]}/><meshStandardMaterial color={['#a29c8c','#d8ccaa','#7f9995','#a69172','#b2ad8c','#829b98'][i]}/></mesh>}</React.Fragment>)}<mesh position={[6,0,0]} rotation={[0,.7,.12]}><sphereGeometry args={[1.8,96,64]}/><meshStandardMaterial map={texture}/></mesh></group></>;
+}
+export default function Arrival({onComplete}) {const[chapter,setChapter]=useState(0);return <div className="journey"><Canvas camera={{position:[0,18,30],fov:42}} dpr={[1,1.5]}><Suspense fallback={null}><Journey onComplete={onComplete} onChapter={setChapter}/></Suspense></Canvas><button className="journey-skip" onClick={onComplete}>Omitir introducción ↗</button><div className="journey-caption"><p className="eyebrow">UN VIAJE HACIA OTRO MUNDO</p><h1>{['Nuestra galaxia.','Nuestro sistema solar.','Marte.'][chapter]}</h1><p>Una aproximación visual · escalas y posiciones ilustrativas</p><div className="journey-steps">{['Galaxia','Sistema solar','Marte'].map((s,i)=><span className={chapter===i?'active':''} key={s}>{s}</span>)}</div></div></div>}

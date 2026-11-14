@@ -16,7 +16,7 @@ Rutas: `/` planeta, `/explorar` maqueta del rover, `/fuentes` bibliografía inic
 
 ## Estado de esta versión
 
-Prototipo visual: globo con textura, control orbital, expansión, tema persistido por navegador, recorrido guiado, rover modelado con primitivas y paseo ilustrativo. La entrada es un acercamiento breve al planeta; **no hay todavía una escena de galaxia o sistema solar completo**. El modo expandido ocupa el viewport de la aplicación.
+Prototipo visual: mapa a viewport completo con controles flotantes, globo con textura, control orbital, vista sin distracciones, tema persistido por navegador, recorrido guiado, rover modelado con primitivas y paseo ilustrativo. La entrada de unos ocho segundos recorre una galaxia de partículas, sistema solar y acercamiento a Marte; puede omitirse y repetirse. Las posiciones y escalas son ilustrativas, no efemérides. La entrada automática respeta movimiento reducido.
 
 No incorpora elevación real, localización geográfica del rover, datos meteorológicos, rutas A*, alertas de radiación ni navegación física. La retícula es una referencia gráfica sin etiquetas geográficas. El paseo no evita obstáculos. No interpretar el terreno como un mapa científico de Jezero.
 

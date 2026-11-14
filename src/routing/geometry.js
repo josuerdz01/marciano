@@ -1,7 +1,7 @@
 export const radians=d=>d*Math.PI/180;
-export function cellIndex(dem,point){const c=Math.floor((point.lon-dem.west)/dem.stepLon),r=Math.floor((dem.north-point.lat)/dem.stepLat);return c<0||r<0||c>=dem.width||r>=dem.height?-1:r*dem.width+c;}
+export function cellIndex(dem,point){const c=Math.floor((((point.lon-dem.west)%360+360)%360)/dem.stepLon),r=Math.floor((dem.north-point.lat)/dem.stepLat);return c<0||r<0||c>=dem.width||r>=dem.height?-1:r*dem.width+c;}
 export function cellCoordinates(dem,index){return{lon:dem.west+(index%dem.width+.5)*dem.stepLon,lat:dem.north-(Math.floor(index/dem.width)+.5)*dem.stepLat};}
-export function worldCoordinates(map,geo){return[(geo.lon-map.west)/map.span*24-12,(map.north-geo.lat)/map.span*map.height-map.height/2];}
+export function worldCoordinates(map,geo){return[(((geo.lon-map.west)%360+360)%360)/map.span*24-12,(map.north-geo.lat)/map.span*map.height-map.height/2];}
 export function metricDistance(a,b,radius=3396190){const lat1=radians(a.lat),lat2=radians(b.lat),dlat=lat2-lat1,dlon=radians(b.lon-a.lon);return 2*radius*Math.asin(Math.min(1,Math.sqrt(Math.sin(dlat/2)**2+Math.cos(lat1)*Math.cos(lat2)*Math.sin(dlon/2)**2)));}
 export function makeRouteGrid(dem,map){
  const values=dem.values,mask=new Uint8Array(values.length),slopes=new Float32Array(values.length);slopes.fill(Infinity);
@@ -10,5 +10,5 @@ export function makeRouteGrid(dem,map){
  const neighbors=[values[i-1],values[i+1],values[i-dem.width],values[i+dem.width]];if(neighbors.some(z=>!Number.isFinite(z)))continue;
  const dx=radians(dem.stepLon)*dem.radius*Math.cos(radians(geo.lat)),dy=radians(dem.stepLat)*dem.radius;const gx=(neighbors[1]-neighbors[0])/(2*dx),gy=(neighbors[3]-neighbors[2])/(2*dy);slopes[i]=Math.atan(Math.hypot(gx,gy))*180/Math.PI;mask[i]=1;
  }
- return {...dem,mask,slopes};
+ return {width:dem.width,height:dem.height,west:dem.west,north:dem.north,stepLon:dem.stepLon,stepLat:dem.stepLat,radius:dem.radius,values,mask,slopes};
 }

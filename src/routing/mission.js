@@ -12,3 +12,4 @@ export function assessMission(route,{speed,budget,reserve,stopMinutes}){
  const travelMinutes=route.distance*2/(speed*1000)*60,totalMinutes=travelMinutes+stopMinutes,usableMinutes=budget*(1-reserve/100);
  return {travelMinutes,totalMinutes,usableMinutes,marginMinutes:usableMinutes-totalMinutes,withinBudget:totalMinutes<=usableMinutes,roundTripDistance:route.distance*2};
 }
+export function calculateRoutes({grid,a,b,science,maxSlope}){return [{...missionRoute(grid,a,b,science,{maxSlope,weight:0}),id:'short',name:'Menor distancia'},{...missionRoute(grid,a,b,science,{maxSlope,weight:8}),id:'gentle',name:'Menor coste por pendiente'}]}

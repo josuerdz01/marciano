@@ -79,3 +79,13 @@ CTX y MOLA/HRSC son observaciones históricas; pendientes y recorridos son deriv
 El explorador integra 2,054 accidentes geográficos aprobados por IAU, derivados del KML oficial de centros cartográficos USGS (MDIM 2.1). Se filtran registros adoptados y se elimina un duplicado de Feature ID del archivo original. La procedencia, fecha y SHA-256 del KMZ se conservan en `public/data/gazetteer-source.json`.
 
 Los centros dentro de la ventana local se dibujan como pins seleccionables en coordenadas reales. Los tres centros más cercanos que quedan fuera se muestran aparte, con distancia geodésica y rumbo desde el centro del sitio (norte arriba); no se desplazan artificialmente al terreno visible. La búsqueda consulta todo el catálogo y limita a 30 resultados por consulta. Un centro representa una referencia de nomenclatura, no una posición de misión ni la geometría completa del accidente.
+
+### Geología USGS · Tanaka et al. (2014)
+
+En Capas, «Unidades y contactos · USGS» superpone los polígonos de SIM 3292 con colores del renderer oficial y opacidad ajustable. «Consultar un punto del terreno» devuelve la unidad, características e interpretación originales en inglés. Misión incorpora las unidades a lo largo de la ida y contactos cartográficos intersectados, aunque la superposición esté apagada. No altera A*, ni infiere seguridad o composición mineral confirmada.
+
+Fuente: https://doi.org/10.3133/sim3292. Servicio público: `https://services.arcgis.com/v01gqwM5QqNysAAi/arcgis/rest/services/Tanaka_et_al_2014_Mars_Global_Map_Features/FeatureServer`, capas 3 (unidades) y 1 (contactos). La paleta de 44 unidades se obtuvo del renderer de la capa 3 el 2026-11-14. Los recortes se consultan al entrar al explorador y muestran su fecha de recuperación; la publicación científica es de 2014.
+
+Se solicita explícitamente `inSR` y `outSR` como GEOGCS Mars 2000 Sphere, radio 3,396,190 m. ArcGIS transforma su Robinson de Marte al sistema geográfico marciano; no se usa EPSG:4326 terrestre. Se divide la consulta en el antimeridiano, se deduplican OBJECTID y se rechaza una respuesta truncada o con proyección incompatible. Se solicita generalización de 0.0001°; no implica precisión de campo.
+
+Las unidades de ruta se estiman en el punto medio de cada tramo del DEM. Tramos sin clasificación o con superposición/límite se informan aparte. La intersección con contactos cuenta entidades cartografiadas únicas, no eventos de cruce ni obstáculos. Escala fuente 1:20 millones: contexto regional, sin detección de rocas o grietas pequeñas. Si USGS falla, se muestra el error y la planificación con DEM sigue disponible.

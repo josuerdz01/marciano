@@ -1,0 +1,4 @@
+import React,{useMemo,useEffect} from 'react';
+import {pointLocation} from './navigation/explorer';
+import {globalGeometry} from './navigation/globalGeometry';
+export default function GlobalExplorer({map,texture,onEnter}){const geometry=useMemo(()=>globalGeometry(map),[map]);useEffect(()=>()=>geometry.dispose(),[geometry]);return <mesh geometry={geometry} onClick={e=>{if(e.delta>5)return;e.stopPropagation();onEnter(pointLocation(map,e.point.x,e.point.z))}}><meshBasicMaterial map={texture} color={texture?'#ffffff':'#586057'} toneMapped={false}/></mesh>}

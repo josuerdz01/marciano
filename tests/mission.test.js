@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {missionRoute,assessMission} from '../src/routing/mission.js';
+const grid=()=>({width:7,height:7,west:0,north:0,stepLon:.00337412,stepLat:.00337412,radius:3396190,values:new Float32Array(49),mask:new Uint8Array(49).fill(1),slopes:new Float32Array(49)});
+test('science stop is traversed once with a continuous cumulative profile',()=>{const g=grid(),direct=missionRoute(g,0,6,null,{weight:0}),via=missionRoute(g,0,6,45,{weight:0});assert.equal(via.path[0],0);assert.equal(via.path.at(-1),6);assert.equal(via.path.filter(i=>i===45).length,1);assert.ok(via.distance>direct.distance);assert.equal(via.profile.length,via.path.length);assert.equal(via.profile.at(-1).distance,via.distance);assert.ok(via.profile.every((p,i)=>i===0||p.distance>via.profile[i-1].distance))});
+test('inaccessible science stop rejects mission rather than bypassing it',()=>{const g=grid();g.mask[45]=0;assert.throws(()=>missionRoute(g,0,6,45,{}))});
+test('budget includes return, science time and protected reserve',()=>{const m=assessMission({distance:2000},{speed:2,budget:240,reserve:25,stopMinutes:30});assert.equal(m.roundTripDistance,4000);assert.equal(m.totalMinutes,150);assert.equal(m.usableMinutes,180);assert.equal(m.marginMinutes,30);assert.equal(m.withinBudget,true);assert.equal(assessMission({distance:2000},{speed:2,budget:120,reserve:25,stopMinutes:30}).withinBudget,false)});
+test('invalid scenario cannot produce a misleading time budget',()=>{assert.throws(()=>assessMission({distance:1000},{speed:0,budget:240,reserve:25,stopMinutes:20}));assert.throws(()=>assessMission({distance:1000},{speed:2,budget:240,reserve:100,stopMinutes:20}))});

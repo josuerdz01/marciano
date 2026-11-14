@@ -65,3 +65,11 @@ La vista cenital mantiene el mapa a viewport completo. El panel se superpone con
 La introducción, el planeta y el mapa comparten un único Canvas. El recorrido inicial usa una curva continua de cámara y objetivo, y el cambio al mapa interpola cámara y opacidad sin una cortina opaca. Se respeta movimiento reducido. Las pruebas de movimiento verifican continuidad y coincidencia de encuadres finales; la comprobación visual principal se realizó en escritorio a 1440 × 900.
 
 La cobertura del explorador sigue siendo una ventana local de 3 × 3 teselas; no es todavía un mapa global con carga continua. Los cinco lugares están disponibles desde búsqueda aunque queden fuera de esa ventana.
+
+### Caminata científica · Space Apps
+
+El panel Misión permite situar una base A, un destino B y una parada científica C opcional. Cada alternativa A* debe pasar por C; una parada inaccesible produce un error, no se omite. El objetivo científico es una intención del usuario, no un descubrimiento confirmado. El rover continúa como acompañante ilustrativo.
+
+El resumen calcula ida y regreso por las mismas celdas, trabajo científico y margen tras una reserva de tiempo. Ritmo (2 km/h), disponibilidad (240 min), reserva (25 %) y trabajo (20 min) son valores iniciales de demostración editables, sin procedencia fisiológica ni certificación NASA. Fórmula: minutos de viaje = 2 × distancia de ida / ritmo × 60; total = viaje + trabajo; disponible = presupuesto × (1 − reserva/100). No modela esfuerzo ni recursos del traje. El coste A* por pendiente es simétrico; ascenso y descenso se intercambian al volver.
+
+CTX y MOLA/HRSC son observaciones históricas; pendientes y recorridos son derivados. Clima, radiación, suelo y obstáculos siguen sin integrar y se indican explícitamente. No se generan mediciones actuales ni alertas radiológicas ficticias. CRISM permanece como fuente candidata, pendiente de cobertura y procesamiento. El objetivo es un prototipo explicable de planificación, no navegación operacional.

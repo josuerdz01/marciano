@@ -123,3 +123,17 @@ El cálculo utiliza un worker y, si un navegador integrado demora su ejecución,
 Planeta y Explorar reutilizan el mismo componente de marcador: cápsula oscura, punto verde y nombre. Los puntos del explorador se superponen en sus coordenadas sobre el terreno, sin ficha secundaria ni línea vertical. El clic abre la ficha del lugar. Se retiró la tarjeta flotante de lugares fuera del área.
 
 Un único estado de textura y catálogo gobierna ambas vistas y persiste en el navegador. Incluye CTX en el globo (mosaico global de menor resolución verificado contra tileInfo Esri) y CTX detallado en el explorador, junto con Viking, MOLA/HRSC y THEMIS. Cambiar desde cualquiera de las vistas conserva la selección al pasar a la otra. Las vistas derivadas del DEM permanecen como herramientas locales; seleccionar una textura orbital activa de nuevo Imagen orbital.
+
+### Jezero: elevación estéreo y ortoimagen compatible
+
+Dentro de la cobertura empaquetada (77.3–78.05° E, 18.05–18.8° N), se prioriza el DEM CTX estéreo de **20 m** de Mars 2020 Science Investigation, USGS/Calef (2021). El producto se ajustó verticalmente a MOLA; no se mezcla con el DEM global en una misma ventana. Si la ventana completa no cabe o falla la verificación, se usa el respaldo global MOLA/HRSC de 200 m. La interfaz indica fuente, resolución y fallo regional si corresponde.
+
+`scripts/prepare_jezero.mjs` extrae píxeles nativos sin remuestrear, rellenar huecos ni suavizar. Valida la proyección equirectangular de Marte (radio 3396190 m, paralelo estándar 18.4663°), convierte su georreferencia lineal a coordenadas geográficas y guarda Float32 little endian comprimido sin pérdida. El manifiesto conserva el SHA-256 del TIFF original y del recorte. En el navegador se verifica el hash antes de usarlo y se recorta con halo a la ventana visible. A* conserva las muestras nativas y NoData.
+
+Al elegir CTX dentro de esa cobertura, se utiliza la ortoimagen **del mismo conjunto científico**, no el mosaico CTX global no controlado. La imagen original es de ~5 m/píxel; el overview empaquetado tiene ~13.7 m/píxel y el lienzo local puede reducirlo más. La interfaz muestra la resolución efectiva de visualización. Su proyección se verifica por separado: los orígenes y tamaños de píxel de imagen y DEM difieren, y se transforman usando sus propios metadatos. Se preserva la selección CTX común entre globo y explorador. Fallos de imagen no bloquean el DEM ni la navegación.
+
+La malla visible se limita a 512×512 celdas; las rutas usan la cuadrícula nativa independiente. Las curvas de nivel se derivan de esa malla visible, con curvas maestras y etiquetas cada cinco intervalos. El sombreado es sintético. La densidad de curvas no aumenta la resolución del producto. Los contactos USGS distinguen certeza, aproximación, inferencia, enterramiento y transición gradual, sin reinterpretarlos como barreras físicas.
+
+Fuentes originales y límites: [DEM y ortoimagen Science Investigation](https://astrogeology.usgs.gov/search/map/mars_2020_science_investigation_ctx_dem_mosaic). Resolución no equivale a precisión horizontal o vertical: este conjunto no permite certificar obstáculos pequeños ni seguridad de tránsito. No se presupone precisión HiRISE de 1 m fuera de productos y coberturas validados.
+
+Reproducir: descargar los TIFF `source` de ambos manifiestos; ejecutar `node scripts/prepare_jezero.mjs <dem.tif>` y `node scripts/prepare_jezero_ortho.mjs <ortho.tif>` (este último requiere `sharp` disponible en Node). Los TIFF originales de 90/360 MB no se incluyen en Git.

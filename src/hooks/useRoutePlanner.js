@@ -13,7 +13,7 @@ export function useRoutePlanner(map,dem,loadError=''){const[points,setPoints]=us
  // Some embedded browsers defer module workers indefinitely. Keep the same
  // numerical solver as a bounded-area fallback, never leave the UI locked.
  const fallback=()=>{if(done||id!==generation.current)return;worker.current?.terminate();if(grid.width*grid.height>300000){finish({error:'El cálculo no respondió. Prueba un área menor o vuelve a intentarlo.'});return}try{finish({routes:calculateRoutes(input)})}catch(error){finish({error:error.message})}};
- try{const w=new Worker(new URL('../routing/route.worker.js',import.meta.url),{type:'module'});worker.current=w;w.onmessage=({data})=>finish(data);w.onerror=fallback;fallbackTimer.current=setTimeout(fallback,2500);w.postMessage(input)}catch{fallback()}
+ try{const w=new Worker(new URL('../routing/route.worker.js',import.meta.url),{type:'module'});worker.current=w;w.onmessage=({data})=>finish(data);w.onerror=fallback;fallbackTimer.current=setTimeout(fallback,grid.width*grid.height>300000?20000:2500);w.postMessage(input)}catch{fallback()}
  }
 
  const route=routes.find(r=>r.id===selected),path=useMemo(()=>route&&map?route.path.map(i=>worldCoordinates(map,cellCoordinates(grid,i))):null,[route,map,grid]);

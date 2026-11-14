@@ -57,7 +57,7 @@ function App(){
  </div><div className="inspector-footer"><span className="dot"/> {surface?overlay.layer.instrument+' · mapa local':'NASA Mars Trek · WMTS'}</div></aside>
  </main>}
  {!library&&<button className="replay" onClick={replayIntro}>Repetir viaje <Play size={12}/></button>}
- 
+
  {intro&&!library&&<Arrival chapter={introChapter} finishing={introFinishing} onSkip={()=>setSkipIntro(true)}/>}
  {tour>=0&&<div className="tour-backdrop"><section className="tour" role="dialog" aria-modal="true" aria-labelledby="tour-title"><button className="icon close" onClick={()=>setTour(-1)} aria-label="Cerrar recorrido"><X size={18}/></button><p className="eyebrow">{tour+1} / 3</p><h2 id="tour-title">{['Acércate a Marte.','Elige cómo verlo.','Conduce al explorador.'][tour]}</h2><p>{['Gira el planeta y acerca el zoom: al llegar a la superficie cargaremos imágenes locales de ese sitio.','El panel reúne Mapa, Ruta, Rover y Datos. Cada capa conserva su fuente y cobertura.','El rover aparece sobre imágenes CTX reales. Usa WASD, flechas o controles táctiles; la conducción es ilustrativa.'][tour]}</p><button autoFocus className="primary" onClick={()=>tour===2?setTour(-1):setTour(tour+1)}>{tour===2?'Listo':'Siguiente'}<ChevronRight size={16}/></button></section></div>}
  </div>

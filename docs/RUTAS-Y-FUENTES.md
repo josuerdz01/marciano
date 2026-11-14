@@ -2,7 +2,7 @@
 
 ## Qué hace falta
 
-1. Región acotada y A/B en coordenadas de Marte. El sitio del enlace de Trek (44.3848 E, 35.9912 S) no es Jezero. No asumir que una región tiene los mismos datos que otra.
+1. Región acotada y A/B en coordenadas de Marte. El sitio del enlace actual de Trek (57.7057 O, 20.1489 S) no es Jezero. No asumir que una región tiene los mismos datos que otra.
 2. Elevación numérica DEM/DTM, máscara NoData y metadatos de proyección, datum y resolución; una imagen de relieve coloreada no sustituye alturas.
 3. Derivados: pendientes longitudinales y laterales, rugosidad a escala del rover, bordes/escalones, obstáculos y máscara de suelo difícil. Las imágenes ayudan a interpretar rocas y dunas, pero el color no determina automáticamente capacidad portante o deslizamiento.
 4. Modelo del vehículo: dimensiones y huella, radio de giro, altura libre, pendiente admisible, estabilidad, velocidad, energía y penalizaciones por terreno. Parámetros de un personaje no equivalen a límites de ingeniería.
@@ -48,4 +48,4 @@ CRISM sí complementa el producto como capa científica. MTRDR es una buena entr
 
 ## Estado actual de Marciano
 
-Ya muestra imágenes reales globales WMTS y una vista local CTX con rover simbólico. El plano local aún no tiene alturas. No calcula rutas A*, pendientes, colisiones ni alertas radiológicas. La carga local es una ventana de nueve teselas, no un mapa infinito. El movimiento del personaje es ilustrativo y limitado a esa ventana. La investigación anterior prepara el siguiente trabajo de datos; no afirma que esos rasters estén integrados.
+Ahora integra un recorte numérico MOLA/HRSC v2 de USGS y calcula rutas regionales con A*, sobre la región del enlace más reciente. Las imágenes CTX y la cuadrícula de elevación son fuentes distintas. El rover puede recorrer la ruta y llegar a B, con escala y velocidad simbólicas. No se han incorporado obstáculos locales, energía ni radiación. La geometría visible sigue plana. Ver [implementación de rutas y tecnologías](IMPLEMENTACION-RUTAS.md).

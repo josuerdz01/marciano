@@ -1,6 +1,6 @@
 import {CanvasTexture,SRGBColorSpace} from 'three';
 import {parseCapabilities} from './trekWmts.js';
-export const initialSite={lon:44.38476479706583,lat:-35.99121026613558};
+export const initialSite={lon:-57.70568740014555,lat:-20.148925405400668};
 export const ctxLayer={id:'ctx',name:'Superficie CTX',instrument:'MRO · CTX',product:'CTX_beta01_uncontrolled_5m_Caltech',latitude:90,capabilities:'https://trek.nasa.gov/tiles/Mars/EQ/CTX_beta01_uncontrolled_5m_Caltech/1.0.0/WMTSCapabilities.xml',credit:'NASA/JPL-Caltech/MSSS · Caltech Murray Lab · Esri · Mars Trek'};
 async function loadWindow(site,signal,level){
  const response=await fetch(ctxLayer.capabilities,{signal});if(!response.ok)throw new Error('No se pudo consultar CTX.');const advertised=parseCapabilities(await response.text(),'11');const service=advertised.template.split('/tile/')[0];const serviceResponse=await fetch(service+'?f=json',{signal});if(!serviceResponse.ok)throw new Error('No se pudo consultar la cuadrícula CTX.');const metadata=await serviceResponse.json();const info=metadata.tileInfo,lod=info?.lods.find(x=>x.level===level);if(!lod||info.origin.x!==-180||info.origin.y!==90||info.spatialReference.wkid!==104971)throw new Error('Cuadrícula planetaria CTX no compatible.');const grid={template:service+'/tile/{TileMatrix}/{TileRow}/{TileCol}',matrixId:String(lod.level),width:360/(lod.resolution*info.cols),height:180/(lod.resolution*info.rows),tileWidth:info.cols};

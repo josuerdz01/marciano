@@ -89,3 +89,11 @@ Fuente: https://doi.org/10.3133/sim3292. Servicio público: `https://services.ar
 Se solicita explícitamente `inSR` y `outSR` como GEOGCS Mars 2000 Sphere, radio 3,396,190 m. ArcGIS transforma su Robinson de Marte al sistema geográfico marciano; no se usa EPSG:4326 terrestre. Se divide la consulta en el antimeridiano, se deduplican OBJECTID y se rechaza una respuesta truncada o con proyección incompatible. Se solicita generalización de 0.0001°; no implica precisión de campo.
 
 Las unidades de ruta se estiman en el punto medio de cada tramo del DEM. Tramos sin clasificación o con superposición/límite se informan aparte. La intersección con contactos cuenta entidades cartografiadas únicas, no eventos de cruce ni obstáculos. Escala fuente 1:20 millones: contexto regional, sin detección de rocas o grietas pequeñas. Si USGS falla, se muestra el error y la planificación con DEM sigue disponible.
+
+### Navegación y continuidad
+
+Cambiar de lugar dentro del explorador conserva `/explorar` y mantiene el mapa anterior utilizable mientras se carga el nuevo. No obliga a subir al planeta. La entrada animada desde el globo se completa sólo si su intención sigue activa, la ruta sigue siendo `/`, terminó el vuelo y la respuesta corresponde al sitio solicitado. Navegar explícitamente o cancelar invalida esa intención.
+
+El descenso por proximidad requiere un nuevo gesto de acercamiento con la rueda; un vuelo de cámara o volver a Planeta no lo activa. Volver al mismo sitio reutiliza el mapa cargado y conserva la misión. Cambiar realmente de región reemplaza el mapa y reinicia sus puntos de ruta, porque pertenecen al DEM y a la cobertura anteriores.
+
+Regresión de escritorio comprobada: cambiar del explorador a Jezero sin pasar por `/`; abrir la región con DEM desde Misión; interrumpir una carga entrando a Fuentes; volver de Fuentes con A, B y las dos alternativas conservadas; volver a Planeta sin descenso automático.

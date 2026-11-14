@@ -1,3 +1,4 @@
+import {sourceFetch,removeCachedSource} from '../data/sourceCache.js';
 // Preserve native cells and their NoData mask. A regional source must cover the
 // complete requested viewport; never splice different vertical datums together.
 export function cropRegional(dem,map){
@@ -12,6 +13,6 @@ let cached;
 export async function loadJezero(map,signal){
  // Fetch only inside the regional product's intended coverage.
  if(map.west<77.3||map.west+map.span>78.05||map.north>18.8||map.north-map.span<18.05)return null;
- if(!cached)cached=(async()=>{const a=await fetch('/data/jezero-dem.json');if(!a.ok)throw new Error('Metadatos CTX no disponibles');const meta=await a.json();const b=await fetch('/data/jezero-dem.f32.gz');if(!b.ok)throw new Error('DEM CTX no disponible');const bytes=await decodeElevationBytes(await b.arrayBuffer());if(bytes.byteLength!==meta.width*meta.height*4)throw new Error('DEM CTX truncado');const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');if(hash!==meta.sha256)throw new Error('Integridad del DEM CTX incorrecta');const view=new DataView(bytes),values=Float32Array.from({length:meta.width*meta.height},(_,i)=>view.getFloat32(i*4,true));return{...meta,values}})().catch(e=>{cached=null;throw e});
+ if(!cached)cached=(async()=>{const a=await fetch('/data/jezero-dem.json');if(!a.ok)throw new Error('Metadatos CTX no disponibles');const meta=await a.json();const b=await sourceFetch('/data/jezero-dem.f32.gz?v='+meta.sha256);if(!b.ok)throw new Error('DEM CTX no disponible');const bytes=await decodeElevationBytes(await b.arrayBuffer());if(bytes.byteLength!==meta.width*meta.height*4)throw new Error('DEM CTX truncado');const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');if(hash!==meta.sha256){removeCachedSource('/data/jezero-dem.f32.gz?v='+meta.sha256);throw new Error('Integridad del DEM CTX incorrecta')}const view=new DataView(bytes),values=Float32Array.from({length:meta.width*meta.height},(_,i)=>view.getFloat32(i*4,true));return{...meta,values}})().catch(e=>{cached=null;throw e});
  const dem=await cached;signal.throwIfAborted();return cropRegional(dem,map);
 }

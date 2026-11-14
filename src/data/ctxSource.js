@@ -1,0 +1,1 @@
+export const ctxLayer={id:'ctx',name:'Superficie CTX',instrument:'MRO · CTX',product:'CTX_beta01_uncontrolled_5m_Caltech',latitude:90,capabilities:'https://trek.nasa.gov/tiles/Mars/EQ/CTX_beta01_uncontrolled_5m_Caltech/1.0.0/WMTSCapabilities.xml',credit:'NASA/JPL-Caltech/MSSS · Caltech Murray Lab · Esri · Mars Trek'};

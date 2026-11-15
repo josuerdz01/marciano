@@ -229,3 +229,11 @@ El indicador activo del header adapta `SlidingPill` de WaterWiki: desplazamiento
 El tablero sólo se comprimió verticalmente (~181 px de alto en QA, 400 px de ancho), conservando posición, velocímetro, ritmo, tiempo de viaje, distancia, margen, estado, los cuatro ajustes de misión, controles de viaje, inclinación y factor temporal. Los paneles no lo ocultan.
 
 QA de esta organización: 78 pruebas aprobadas. En navegador se verificaron ambos paneles simultáneos e independientes, búsqueda de Belva y navegación directa conservando el panel derecho, el catálogo de diez aterrizajes en Planeta, cambio cenital/3D desde Capas y cambio Misión ↔ Capas. El indicador del header se observó en una posición intermedia durante su desplazamiento. El tablero midió 400 × 180.5 px y conservó sus cinco inputs. El movimiento del rover basado en el relieve y la antena flexible se mantienen.
+
+### Etiquetas que respetan el espacio del rover
+
+Las etiquetas de lugares y los indicadores A/B/C comparten un registro de posiciones en pantalla. Se proyecta el volumen visible del rover con la misma cámara; al coincidir una etiqueta, se recoloca preferentemente a derecha o izquierda, manteniéndose dentro del viewport y evitando otras etiquetas. Si no cabe lateralmente, puede usar una posición superior/inferior; sólo se oculta temporalmente el texto si no existe espacio fuera del rover. El punto del mapa y el catálogo permanecen disponibles.
+
+Una línea fina conserva el enlace con el ancla geográfica original. El desplazamiento tiene transición corta y una zona de retención para evitar parpadeos cerca del límite; la etiqueta vuelve a su posición original cuando el rover se aleja. No cambian coordenadas, rutas, DEM ni el z-index: rover 5 y etiquetas 1–4. La recolocación trabaja por lotes ~13 veces por segundo, sin actualizaciones de estado global de React en cada frame, y respeta movimiento reducido.
+
+QA: pruebas numéricas de separación, bordes del viewport, otras etiquetas/indicadores, retorno y espacio insuficiente. En navegador, Belva se desplazó lateralmente 66.7 px en 3D y ~62.9 px en cenital, siguió siendo clicable y no intersectó el volumen proyectado del rover. Las cuatro etiquetas visibles de la comprobación final tuvieron intersección cero y la capa del rover conservó z-index 5.

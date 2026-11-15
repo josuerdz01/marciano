@@ -1,3 +1,4 @@
+import {explorerBounds,mapPoint} from '../navigation/explorer.js';
 import {CatmullRomCurve3,Vector3,Quaternion} from 'three';
 export const smooth=t=>{const x=Math.min(1,Math.max(0,t));return x*x*x*(x*(x*6-15)+10)};
 export const globeDistance=aspect=>7/Math.min(1,aspect);
@@ -11,3 +12,6 @@ export function switchLocalRig(position,target,topDown,inclinedDirection=new Vec
 export function rebaseLocalPoint(point,from,to){const oldCenter=from.west+from.span/2,newCenter=to.west+to.span/2,lon=oldCenter+point.x/24*from.span,delta=((lon-newCenter+180)%360+360)%360-180,lat=from.north-(point.z/from.height+.5)*from.span;return new Vector3(delta/to.span*24,point.y*(from.widthKm/to.widthKm),(to.north-lat)/to.span*to.height-to.height/2)}
 
 export function viewRigAt(from,to,fromTarget,toTarget,t){const a=from.clone().sub(fromTarget),b=to.clone().sub(toTarget),distance=Math.exp(Math.log(a.length())*(1-t)+Math.log(b.length())*t),direction=a.normalize(),turn=new Quaternion().setFromUnitVectors(direction,b.normalize()),target=fromTarget.clone().lerp(toTarget,t);return{target,position:direction.applyQuaternion(new Quaternion().slerp(turn,t)).multiplyScalar(distance).add(target)}}
+
+// Fit the whole geographic extent, independent of the previously explored site.
+export function globalRig(map,aspect,fov=42){const bounds=explorerBounds(map),target=new Vector3(mapPoint(map,{lon:0,lat:0})[0],0,bounds.z),distance=Math.max(bounds.width/aspect,bounds.height)*.55/Math.tan(fov*Math.PI/360);return{target,position:target.clone().add(new Vector3(0,distance,distance*.0001))}}

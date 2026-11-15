@@ -311,3 +311,9 @@ La escalera lateral tiene cuatro peldaños y pasamanos. La trayectoria del pilot
 Las descargas CTX reintentan una vez los errores transitorios y usan tres solicitudes simultáneas, con un límite global de 12 segundos para intentar ese contexto. Si no responde, la nueva región puede abrirse con teselas reales MOLA/HRSC o Viking de NASA Mars Trek, indicando la fuente de respaldo y preservando su máscara de cobertura. El DEM sigue cargándose por separado; no se inventan alturas ni se reutilizan imágenes de otro sitio. Si tampoco hay cartografía de respaldo, se conserva el mapa anterior con un mensaje legible y reintento.
 
 Las rutas resueltas pertenecen a un mapa, DEM y cuadrícula concretos. Al cambiar cualquiera de ellos se ocultan inmediatamente los recorridos y métricas anteriores, antes del efecto que reinicia el planificador. Las solicitudes canceladas no pueden activar un respaldo ni sustituir una selección posterior.
+
+## Ajustes durante una ruta y accesorios animados
+
+Los números del tablero conservan un borrador mientras se escribe, incluidos campos temporalmente vacíos. Enter o salir del campo aplica un valor completo dentro de rango; Escape cancela. Un valor inválido se marca sin sustituirlo por el mínimo o máximo. Los recálculos por edición manual mantienen velocidad, tiempo, reserva, ciencia y pendiente elegidos: si no hay una solución viable, el viaje queda en pausa con explicación. La adaptación automática inicial de una nueva ruta se conserva.
+
+La escalera se retrae cuando el piloto ya está dentro y se despliega antes del descenso. El faro realiza un barrido horizontal con aceleración suave y pausas de observación; lente, spotlight, haz y huella siguen la misma dirección. Con movimiento reducido permanece orientado al frente.

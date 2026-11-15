@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {parseMissionNumber} from '../src/rover/missionNumberValue.js';
+import {resolveMissionScenario,calculateAdaptiveRoutes} from '../src/routing/autofit.js';
+import {ladderDeployment} from '../src/rover/boarding.js';
+import {headlampYaw} from '../src/rover/headlampMotion.js';
+test('unfinished and out-of-range drafts never clamp or become a different mission value',()=>{assert.equal(parseMissionNumber('',30,720),null);assert.equal(parseMissionNumber('1',30,720),null);assert.equal(parseMissionNumber('120',30,720),120);assert.equal(parseMissionNumber('1.5',.5,5),1.5);assert.equal(parseMissionNumber('7200',30,720),null)});
+test('an infeasible manual edit stays unchanged instead of being auto-fitted',()=>{const settings={speed:2,budget:30,reserve:25,stopMinutes:20},copy={...settings},route={id:'gentle',distance:1000,returnDistance:1000};assert.equal(resolveMissionScenario([route],settings,10,false),null);assert.deepEqual(settings,copy);assert.equal(resolveMissionScenario([route],{...settings,budget:240},10,false).settings.budget,240)});
+test('manual slope limit cannot be relaxed by the solver',()=>{const grid={width:3,height:3,west:0,north:.003,stepLon:.001,stepLat:.001,radius:3396190,values:new Float32Array(9),mask:new Uint8Array(9).fill(1),slopes:new Float32Array(9).fill(18)};assert.throws(()=>calculateAdaptiveRoutes({grid,a:0,b:8,maxSlope:5,allowAdjustments:false}));assert.equal(calculateAdaptiveRoutes({grid,a:0,b:8,maxSlope:5}).slope,20)});
+test('ladder deploys before feet enter it and stows only after the pilot is inside',()=>{assert.equal(ladderDeployment(0),0);assert.equal(ladderDeployment(.18),1);assert.equal(ladderDeployment(.5),1);assert.equal(ladderDeployment(1),1);assert.ok(ladderDeployment(.08)>0&&ladderDeployment(.08)<1)});
+test('headlight scan includes real pauses, stays bounded and joins without jumps',()=>{assert.equal(headlampYaw(4),headlampYaw(4.5));assert.equal(headlampYaw(8),headlampYaw(8.5));assert.equal(headlampYaw(3,true),0);for(let i=0;i<1400;i++)assert.ok(headlampYaw(i/100)>=-.321&&headlampYaw(i/100)<=.291);for(const t of [0,1.1,3.5,4.7,7.5,8.8,10.5,11.5,13.5,14])assert.ok(Math.abs(headlampYaw(t-.0001)-headlampYaw(t+.0001))<.001)});

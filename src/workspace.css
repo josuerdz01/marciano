@@ -131,3 +131,4 @@
 .route-cursor-confirm .primary{margin:0}
 .route-cursor-confirm>div>.icon{width:32px;height:32px;min-height:32px;flex-shrink:0}
 .rover-cockpit .retro-instruments .header-dose{transform:scale(.9);transform-origin:center}
+.rover-cockpit input[aria-invalid=true]{outline:1px solid #dfb382;outline-offset:2px}

@@ -6,3 +6,5 @@ export function stepBoarding(progress,wantsMotion,seconds,reducedMotion=false){
 }
 export const mayDrive=progress=>progress<=1e-6;
 export function pilotPhase(progress,wantsMotion){return wantsMotion?(mayDrive(progress)?'seated':'boarding'):(progress>=1?'outside':'exiting')}
+
+export function ladderDeployment(progress){const t=Math.max(0,Math.min(1,(progress-.02)/.14));return t*t*t*(t*(t*6-15)+10)}

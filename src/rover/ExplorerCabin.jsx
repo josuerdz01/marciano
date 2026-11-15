@@ -1,3 +1,5 @@
+import {headlampYaw} from './headlampMotion';
+import {ladderDeployment} from './boarding';
 import {pilotPath,waveEnvelope} from './pilotMotion';
 import React,{useRef} from 'react';
 import {useFrame} from '@react-three/fiber';
@@ -6,7 +8,7 @@ import * as THREE from 'three';
 
 // Original open cockpit and suited pilot, built from project-owned geometry.
 export default function ExplorerCabin({boarding,chassis}){
- const pilot=useRef(),arm=useRef(),hand=useRef(),started=useRef(null),canopy=useRef(),legs=useRef([]),knees=useRef([]),leftArm=useRef(),elbow=useRef(),body=useRef(),head=useRef(),wave=useRef(0),ladder=useRef(),turn=useRef(new THREE.Quaternion()),vertical=useRef(new THREE.Vector3(0,1,0)),identity=useRef(new THREE.Quaternion());
+ const pilot=useRef(),arm=useRef(),hand=useRef(),started=useRef(null),canopy=useRef(),headlight=useRef(),legs=useRef([]),knees=useRef([]),leftArm=useRef(),elbow=useRef(),body=useRef(),head=useRef(),wave=useRef(0),ladder=useRef(),turn=useRef(new THREE.Quaternion()),vertical=useRef(new THREE.Vector3(0,1,0)),identity=useRef(new THREE.Quaternion());
  useFrame(({clock},delta)=>{
   started.current??=clock.elapsedTime;
   const elapsed=clock.elapsedTime-started.current;
@@ -25,7 +27,8 @@ export default function ExplorerCabin({boarding,chassis}){
   hand.current.rotation.z=greeting*Math.sin(elapsed*5.5)*.27;
   leftArm.current.rotation.set(-.25*climb,0,-.18-.65*climb);
   legs.current.forEach((leg,i)=>{const stride=Math.sin(step+i*Math.PI);if(leg)leg.rotation.x=-1.1*(1-pose.stand)+stride*.28*climb;if(knees.current[i])knees.current[i].rotation.x=Math.max(0,-stride)*.55*climb});
-  ladder.current.scale.y=(.36-outside.y)/.82;
+  const deployment=ladderDeployment(progress);ladder.current.visible=deployment>.001;ladder.current.scale.set(.15+.85*deployment,(.36-outside.y)/.82*(.08+.92*deployment),1);ladder.current.position.y=.28+.08*deployment;
+  headlight.current.rotation.y=headlampYaw(clock.elapsedTime,reduced);
   canopy.current.rotation.x=-THREE.MathUtils.smoothstep(progress,.02,.22)*1.45;
  });
  return <group>
@@ -59,6 +62,6 @@ export default function ExplorerCabin({boarding,chassis}){
   </group></group>
   {/* Single navigation light and low bumper replace the former character face. */}
   <RoundedBox args={[.7,.1,.1]} radius={.04} position={[0,.04,.43]}><meshStandardMaterial color="#d8ddbf"/></RoundedBox>
-  <group position={[0,.1,.46]} rotation={[Math.PI/2,0,0]}><mesh><cylinderGeometry args={[.12,.12,.07,24]}/><meshStandardMaterial color="#344638" roughness={.5}/></mesh><mesh position={[0,.043,0]}><cylinderGeometry args={[.088,.088,.025,24]}/><meshStandardMaterial color="#fff3cd" emissive="#fff1bc" emissiveIntensity={1.5} toneMapped={false}/></mesh></group>
+  <group ref={headlight} position={[0,.1,.46]}><group rotation={[Math.PI/2,0,0]}><mesh><cylinderGeometry args={[.12,.12,.07,24]}/><meshStandardMaterial color="#344638" roughness={.5}/></mesh><mesh position={[0,.043,0]}><cylinderGeometry args={[.088,.088,.025,24]}/><meshStandardMaterial color="#fff3cd" emissive="#fff1bc" emissiveIntensity={1.5} toneMapped={false}/></mesh></group></group>
  </group>
 }

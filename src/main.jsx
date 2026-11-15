@@ -1,3 +1,4 @@
+import {installMapOnlyZoom} from './ui/mapOnlyZoom';
 import React,{useState,useEffect,useRef} from 'react';
 import {createRoot} from 'react-dom/client';
 import {BrowserRouter,Routes,Route,NavLink,useNavigate,useLocation} from 'react-router';
@@ -106,3 +107,6 @@ function App(){
  </div>
 }
 createRoot(document.getElementById('root')).render(<BrowserRouter><Routes><Route path="*" element={<App/>}/></Routes></BrowserRouter>);
+
+const removeZoomGuard=installMapOnlyZoom();
+if(import.meta.hot)import.meta.hot.dispose(removeZoomGuard);

@@ -132,3 +132,8 @@
 .route-cursor-confirm>div>.icon{width:32px;height:32px;min-height:32px;flex-shrink:0}
 .rover-cockpit .retro-instruments .header-dose{transform:scale(.9);transform-origin:center}
 .rover-cockpit input[aria-invalid=true]{outline:1px solid #dfb382;outline-offset:2px}
+
+/* One shared glass material for the suit dial and the rover instruments. */
+.rover-cockpit:before{background:var(--instrument-glass);backdrop-filter:blur(22px) saturate(130%);-webkit-backdrop-filter:blur(22px) saturate(130%)}
+.brand-word{display:inline-block}.brand-i{position:relative;display:inline-block}.brand-i:before{content:"";position:absolute;width:.14em;height:.14em;left:50%;top:.2em;transform:translateX(-50%);border-radius:50%;background:#a7bf76}
+.rover-energy{display:flex;align-items:center;gap:8px;margin:7px 1px 0;font-size:6px;letter-spacing:.8px;color:#b8c0ab;--energy-color:#c9eea5}.rover-energy>span{white-space:nowrap}.rover-energy>strong{font:8px ui-monospace,monospace;min-width:26px;text-align:right;color:var(--energy-color)}.energy-track{height:3px;border-radius:4px;background:#d3e7b51c;flex:1;overflow:hidden}.energy-track>i{position:relative;display:block;height:100%;border-radius:inherit;background:var(--energy-color);transition:width .6s linear;overflow:hidden;box-shadow:0 0 6px #c9eea528}.energy-track>i:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 20%,#f3ffe9aa 50%,transparent 80%);transform:translateX(-100%)}.is-running .energy-track>i:after{animation:energy-flow 2.8s ease-in-out infinite}.energy-low{--energy-color:#efd383}@keyframes energy-flow{to{transform:translateX(100%)}}@media(prefers-reduced-motion:reduce){.is-running .energy-track>i:after{animation:none}.energy-track>i{transition:none}}

@@ -149,3 +149,12 @@
 /* The globe can be grabbed to rotate, or moved with the secondary button. */
 .viewport:not(.terrain-view) .scene,.viewport:not(.terrain-view) .scene canvas{cursor:grab}
 .viewport:not(.terrain-view) .scene:active,.viewport:not(.terrain-view) .scene canvas:active{cursor:grabbing}
+
+/* One trip card owns status, actions and automatic parameter adjustments. */
+.quick-route-summary{display:flex;flex-direction:column;align-items:stretch;gap:0;max-width:min(430px,calc(100vw - 150px))}
+.quick-route-main{display:flex;align-items:center;gap:15px}
+.quick-route-main>div{flex:1;min-width:0}
+.quick-route-main>button{flex-shrink:0}
+.quick-route-adjustments{display:flex;flex-direction:column;gap:4px;padding-top:10px;margin-top:10px;border-top:1px solid var(--glass-ring);font-size:10px;line-height:1.5}
+.quick-route-adjustments>strong{font-size:10px;color:var(--accent);font-weight:500}
+.quick-route-adjustments>span{color:var(--muted);overflow-wrap:anywhere}

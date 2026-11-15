@@ -293,3 +293,7 @@ El recorrido inicial apunta ahora a ~2 km: el destino aleatorio se toma en un an
 ### Indicadores y controles animados
 
 Las barras verticales de Capas/Misión/Rover/Datos y Mover/Girar comparten un indicador que se desplaza con el mismo rebote de 650 ms del header (sobrepaso 12%, retorno 3%). Los cambios rápidos parten de la posición animada actual. Continuar/pausar usa MorphIcon de Morphicons con datos SVG de Lucide, resorte suave y respeto al movimiento reducido. Se aplica al tablero, resumen de ruta, panel Misión y paseo de prueba. Se retiró la botonera visible «Conducir rover»; el teclado sigue disponible.
+
+### Anclaje de extremos de ruta
+
+A/B/C comparten la posición y altura del marcador de suelo; se retiró el desplazamiento fijo de 0.8 unidades 3D que hacía flotar sus etiquetas lejos de la ruta al acercar o inclinar la cámara. La separación para evitar el rover sigue siendo sólo en pantalla, con línea al ancla real. No cambian coordenadas del DEM ni puntos del cálculo.

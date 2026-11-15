@@ -3,3 +3,5 @@
 .nasa-controls .layer>span{flex:1;text-align:left}.nasa-controls .layer small{display:block;color:var(--muted);font-size:9px;margin-top:4px}.nasa-controls .layer:disabled{opacity:.45;cursor:default}
 
 .nasa-controls .relief-switch{border-radius:14px;padding:13px 12px}.nasa-controls .relief-switch.selected{background:var(--glass-field);border-color:var(--glass-ring)}
+
+.surface-image-controls{padding:15px 0;margin-top:8px;border-top:1px solid var(--glass-ring)}.surface-image-controls>strong{font-size:11px}.surface-image-controls>label{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:10px;color:var(--text)}.surface-image-controls input{width:100%;accent-color:var(--accent)}.surface-image-controls>small{display:block;font-size:9px;line-height:1.6;color:var(--muted);margin-top:10px}

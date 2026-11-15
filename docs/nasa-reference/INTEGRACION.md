@@ -29,3 +29,11 @@ Se conserva la cámara suave de Marsiano, la secuencia de enfoque, saludo y abor
 El panel permite activar «Relieve realzado» únicamente en Terreno 3D. Está desactivado de inicio y multiplica visualmente las diferencias de altura por tres alrededor del datum local. El cambio se interpola sin reconstruir la malla: una transformación del grupo mantiene unidos el terreno, sus superposiciones, las rutas y sus etiquetas. El vehículo y el astronauta conservan sus proporciones y se apoyan en un adaptador de altura de la superficie dibujada.
 
 El DEM, las pendientes del planificador, las distancias, la velocidad y el tiempo se calculan sobre el modelo físico sin exageración. El indicador de inclinación del tablero conserva esa referencia. La leyenda y el pie del mapa identifican el modo ×3; volver a 2D usa la escala 1:1 sin olvidar la preferencia para el siguiente detalle 3D.
+
+## Imagen orbital regional
+
+En Terreno 3D se carga una base fotográfica georreferenciada a la misma ventana: el mosaico Viking VIS en color de Mars Trek, enriquecido con luminancia de CTX cuando está disponible. La composición se identifica como «Viking VIS + MRO CTX»; no se presenta como una captura en color nativo de CTX. Las zonas sin CTX conservan Viking. El cliente verifica el sistema marciano 104971 de CTX, limita la resolución y concurrencia y reutiliza la caché de fuentes públicas.
+
+Primero se publica la imagen de color y después el detalle. Un fallo remoto conserva la vista y no cambia ni reinicia la misión. El control «Intensidad de capas» mezcla la capa analítica seleccionada encima de la fotografía (28 % inicial). Las estructuras, focos y sitios permanecen sobre el terreno. Las imágenes son observaciones orbitales reales; el relieve de este modo sigue siendo el escenario aportado, de modo que sus cráteres fotográficos no deben interpretarse como geometría medida.
+
+La composición cercana se prepara a 3072×3072, seleccionando un nivel CTX acorde a ese tamaño (aproximadamente 5 m/píxel en las latitudes de aterrizaje). Se acota a 64 teselas como máximo por ventana y cuatro descargas concurrentes por capa. Viking aporta el color regional, no detalle cromático a resolución CTX.

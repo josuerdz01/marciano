@@ -277,3 +277,9 @@ En el área local, el objetivo y la cámara se desplazan juntos hacia el rover d
 ### Manipulación del mapa y prioridad topográfica
 
 «Imagen local» encabeza Capas. «Relieve en color · MOLA + HRSC» es la primera opción e inicio por defecto, sustituyendo la preferencia anterior Viking. La capa cartográfica no sustituye ni aumenta la resolución del DEM numérico. El modo inicial de manipulación es Mover: arrastre izquierdo desplaza; Girar cambia a vista 3D y arrastre izquierdo orbita. El botón derecho realiza la acción complementaria en 3D. El cursor muestra mano abierta/cerrada durante el arrastre; la elección explícita de destinos conserva la mira. Clic sin arrastrar sigue eligiendo B y los lugares conocidos conservan su navegación.
+
+### Ajuste automático para completar la misión
+
+Al calcular, A* intenta primero desvíos con la pendiente elegida. Si no conecta, prueba límites progresivos hasta el máximo admitido de 30°, conservando las máscaras de cobertura, NoData y exclusión de torio. No cambia B, la parada científica ni la base de regreso. El resultado incluye la pendiente utilizada.
+
+Si ninguna alternativa cabe en el presupuesto, se busca un escenario viable de ida + regreso: primero se amplía el tiempo conservando ritmo, reserva y ciencia; si se necesitan más de 720 minutos, se ajusta velocidad hasta 5 km/h, y sólo después se reducen reserva y tiempo científico si hace falta. Cada ajuste respeta los límites de los controles y aparece en el tablero junto a los valores actualizados. El tiempo consumido se incluye al recalcular desde el rover y no se reinicia. Cuando los datos, las exclusiones o los límites máximos impiden completar el viaje, se informa sin inventar una conexión ni simular una llegada. Las tolerancias siguen siendo supuestos de un simulador, no certificación de transitabilidad.

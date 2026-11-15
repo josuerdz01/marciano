@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {fitMissionScenario,calculateAdaptiveRoutes} from '../src/routing/autofit.js';
+import {assessMission} from '../src/routing/mission.js';
+import {validScenario} from '../src/routing/cockpit.js';
+const settings={speed:2,budget:30,reserve:25,stopMinutes:20,objective:'Relieve'},route={id:'short',distance:1000,returnDistance:1000};
+test('automatic fitting extends time while preserving pace, reserve and science',()=>{const s={...settings},r=fitMissionScenario([route],s);assert.equal(r.settings.budget,110);assert.equal(r.settings.speed,2);assert.equal(r.settings.reserve,25);assert.equal(r.settings.stopMinutes,20);assert.ok(assessMission(route,r.settings).withinBudget);assert.deepEqual(s,settings);assert.equal(r.changes.length,1)});
+test('automatic fitting counts consumed time and the original return distance',()=>{const r=fitMissionScenario([route],settings,120);assert.equal(r.settings.budget,270);assert.ok(assessMission(route,{...r.settings,elapsedMinutes:120}).withinBudget)});
+test('fitting never fabricates speed or time beyond supported controls',()=>{const r=fitMissionScenario([{...route,distance:25000,returnDistance:25000}],settings);assert.equal(r.settings.speed,5);assert.equal(r.settings.budget,720);assert.ok(validScenario(r.settings));assert.ok(assessMission(r.route,r.settings).withinBudget);assert.equal(r.settings.stopMinutes,20);assert.ok(r.settings.reserve<25);assert.equal(fitMissionScenario([{...route,distance:2e6,returnDistance:2e6}],settings),null)});
+test('already feasible settings remain identical',()=>{const s={...settings,budget:240},r=fitMissionScenario([route],s);assert.equal(r.settings,s);assert.deepEqual(r.changes,[])});
+function grid(){return{width:5,height:5,west:0,north:.005,stepLon:.001,stepLat:.001,radius:3396190,values:new Float32Array(25),mask:new Uint8Array(25).fill(1),slopes:new Float32Array(25)}}
+test('adaptive routing detours before increasing the slope limit',()=>{const g=grid();for(let row=1;row<5;row++)g.slopes[row*5+2]=12;const r=calculateAdaptiveRoutes({grid:g,a:10,b:14,base:10,maxSlope:5});assert.equal(r.slope,5);assert.ok(r.routes.every(r=>r.path.includes(2)));assert.equal(g.slopes[12],12)});
+test('adaptive routing raises a restrictive slope only within the 30 degree cap',()=>{const g=grid();g.slopes.fill(18);const r=calculateAdaptiveRoutes({grid:g,a:0,b:24,base:0,maxSlope:5});assert.equal(r.slope,20);g.slopes.fill(35);assert.throws(()=>calculateAdaptiveRoutes({grid:g,a:0,b:24,base:0,maxSlope:5}))});
+test('adaptive routing cannot bridge unknown or excluded cells',()=>{const g=grid();for(let row=0;row<5;row++)g.mask[row*5+2]=0;assert.throws(()=>calculateAdaptiveRoutes({grid:g,a:10,b:14,base:10,maxSlope:5}),/conectada/);assert.equal(g.mask[12],0)});

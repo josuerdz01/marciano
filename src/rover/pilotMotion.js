@@ -14,3 +14,5 @@ export function pilotPath(progress,outside){
  return {x:x+(outside.x-1.35)*correction,y:y+(outside.y+.46)*correction,z:z+outside.z*correction,stand:ease((p-.18)/.16),climb:ease((p-.34)/.09)*(1-ease((p-.87)/.13))};
 }
 export function waveEnvelope(seconds){const p=((seconds%8)+8)%8;return ease(p/.8)*(1-ease((p-3.5)/1));}
+
+export function departureWave(seconds){return ease(seconds/.35)*(1-ease((seconds-1.25)/.55))}

@@ -1,5 +1,5 @@
 import {ladderDeployment} from './boarding';
-import {pilotPath,waveEnvelope} from './pilotMotion';
+import {pilotPath,waveEnvelope,departureWave} from './pilotMotion';
 import React,{useRef} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {RoundedBox} from '@react-three/drei';
@@ -13,7 +13,7 @@ export default function ExplorerCabin({boarding,chassis}){
   const elapsed=clock.elapsedTime-started.current;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const progress=boarding.current.progress,outside=boarding.current.outside,pose=pilotPath(progress,outside);
-  const target=!boarding.current.wantsMotion&&progress>.98&&!reduced?waveEnvelope(elapsed):0;
+  const target=reduced?0:boarding.current.wantsMotion?(boarding.current.greeting!==null?departureWave(boarding.current.greeting):0):progress>.98?waveEnvelope(elapsed):0;
   wave.current=THREE.MathUtils.damp(wave.current,target,8,Math.min(delta,.05));
   const greeting=wave.current,climb=pose.climb,step=progress*Math.PI*8;
   pilot.current.position.set(pose.x,pose.y+(reduced?0:Math.sin(elapsed*1.7)*.004*pose.stand*(1-climb)),pose.z);

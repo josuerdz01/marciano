@@ -273,3 +273,7 @@ En el terreno local, un clic normal elige B y abre «Ir», sin seleccionar A ni 
 ### Cámara que acompaña al rover
 
 En el área local, el objetivo y la cámara se desplazan juntos hacia el rover durante el avance manual o por ruta, conservando distancia de zoom y orientación. La aproximación amortiguada evita saltos y termina suavemente al detenerse. Las transiciones de vista y el mapa global tienen prioridad y suspenden el seguimiento; se puede seguir orbitando o cambiando el zoom. Movimiento reducido usa seguimiento inmediato. No cambia la geometría ni los cálculos de ruta. El rover sigue siendo simbólico: ancho visible aproximado = 1.49 × 0.32 unidades de escena × ancho regional en metros / 24; no representa una dimensión física fija.
+
+### Manipulación del mapa y prioridad topográfica
+
+«Imagen local» encabeza Capas. «Relieve en color · MOLA + HRSC» es la primera opción e inicio por defecto, sustituyendo la preferencia anterior Viking. La capa cartográfica no sustituye ni aumenta la resolución del DEM numérico. El modo inicial de manipulación es Mover: arrastre izquierdo desplaza; Girar cambia a vista 3D y arrastre izquierdo orbita. El botón derecho realiza la acción complementaria en 3D. El cursor muestra mano abierta/cerrada durante el arrastre; la elección explícita de destinos conserva la mira. Clic sin arrastrar sigue eligiendo B y los lugares conocidos conservan su navegación.

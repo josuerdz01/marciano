@@ -1,4 +1,4 @@
 import {marsLayers} from './marsLayers';
 import {ctxLayer} from './localMap';
-export const textureLayers=[marsLayers[0],{...ctxLayer,native:'5 m/píxel fuente',coverage:'Mosaico global con huecos',description:'Imágenes históricas CTX de MRO. Mosaico no controlado geométricamente; puede presentar huecos y desplazamientos respecto al DEM. La resolución mostrada depende del nivel de tesela.',metadata:ctxLayer.capabilities},...marsLayers.slice(1)];
+export const textureLayers=[marsLayers.find(layer=>layer.id==='mola-color'),marsLayers[0],{...ctxLayer,native:'5 m/píxel fuente',coverage:'Mosaico global con huecos',description:'Imágenes históricas CTX de MRO. Mosaico no controlado geométricamente; puede presentar huecos y desplazamientos respecto al DEM. La resolución mostrada depende del nivel de tesela.',metadata:ctxLayer.capabilities},...marsLayers.slice(1).filter(layer=>layer.id!=='mola-color')];
 export const getTextureLayer=id=>textureLayers.find(layer=>layer.id===id)||textureLayers[0];

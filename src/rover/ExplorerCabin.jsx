@@ -1,4 +1,3 @@
-import {headlampYaw} from './headlampMotion';
 import {ladderDeployment} from './boarding';
 import {pilotPath,waveEnvelope} from './pilotMotion';
 import React,{useRef} from 'react';
@@ -28,7 +27,7 @@ export default function ExplorerCabin({boarding,chassis}){
   leftArm.current.rotation.set(-.25*climb,0,-.18-.65*climb);
   legs.current.forEach((leg,i)=>{const stride=Math.sin(step+i*Math.PI);if(leg)leg.rotation.x=-1.1*(1-pose.stand)+stride*.28*climb;if(knees.current[i])knees.current[i].rotation.x=Math.max(0,-stride)*.55*climb});
   const deployment=ladderDeployment(progress);ladder.current.visible=deployment>.001;ladder.current.scale.set(.15+.85*deployment,(.36-outside.y)/.82*(.08+.92*deployment),1);ladder.current.position.y=.28+.08*deployment;
-  headlight.current.rotation.y=headlampYaw(clock.elapsedTime,reduced);
+  headlight.current.rotation.y=chassis.current.parent?.userData.headlampYaw??0;
   canopy.current.rotation.x=-THREE.MathUtils.smoothstep(progress,.02,.22)*1.45;
  });
  return <group>

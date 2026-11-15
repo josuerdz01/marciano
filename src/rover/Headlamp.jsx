@@ -1,4 +1,3 @@
-import {headlampYaw} from './headlampMotion';
 import React,{useMemo,useRef,useEffect} from 'react';
 import {useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
@@ -14,7 +13,7 @@ export default function Headlamp({roverScene,parent,model}){
  useFrame(({clock})=>{
   const root=roverScene.children.find(c=>c.isGroup),chassis=root?.getObjectByName('rover-chassis'),alpha=parent.current?.userData.alpha??0;
   group.current.visible=Boolean(root?.visible&&chassis&&alpha>.01);if(!group.current.visible)return;
-  const scan=headlampYaw(clock.elapsedTime,matchMedia('(prefers-reduced-motion: reduce)').matches);root.updateWorldMatrix(true,true);source.set(Math.sin(scan)*.06,.1,.46+Math.cos(scan)*.06);chassis.localToWorld(source);end.set(Math.sin(scan)*3.5,-.65,.46+Math.cos(scan)*3.5);chassis.localToWorld(end);
+  const scan=root.userData.headlampYaw??0;root.updateWorldMatrix(true,true);source.set(Math.sin(scan)*.06,.1,.46+Math.cos(scan)*.06);chassis.localToWorld(source);end.set(Math.sin(scan)*3.5,-.65,.46+Math.cos(scan)*3.5);chassis.localToWorld(end);
   light.current.position.copy(source);target.position.copy(end);target.updateMatrixWorld();light.current.intensity=2.4*alpha;
   const distance=source.distanceTo(end);beam.current.position.copy(source).lerp(end,.5);beam.current.quaternion.setFromUnitVectors(axis,source.clone().sub(end).normalize());beam.current.scale.set(.23,distance,.23);
   const a=geometry.attributes.position,uv=geometry.attributes.uv,yaw=root.rotation.y+scan,scale=root.scale.x;

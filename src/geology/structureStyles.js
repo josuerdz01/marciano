@@ -1,0 +1,3 @@
+// Morphology is preserved as published. Styles do not imply obstacle width,
+// crossing safety, certainty, or an engineering cost.
+export function structureStyle(morphology=''){const m=String(morphology).toLowerCase();if(/scarp|graben|rille|trough|caldera|pit crater/.test(m))return{key:'relief',color:'#d4bb98',alpha:.85,pattern:1,label:'Escarpes, depresiones y bordes'};if(/ridge|yardang/.test(m))return{key:'ridge',color:'#c1d69e',alpha:.8,pattern:1,label:'Crestas y yardangs'};if(/channel/.test(m))return{key:'channel',color:'#9ebec5',alpha:.8,pattern:1,label:'Canales'};return{key:'other',color:'#d4d7cb',alpha:.7,pattern:1,label:'Otras estructuras'}}

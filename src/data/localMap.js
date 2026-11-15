@@ -3,6 +3,7 @@ import {parseCapabilities} from './trekWmts.js';
 export const initialSite={lon:-57.70568740014555,lat:-20.148925405400668};
 import {ctxLayer} from './ctxSource.js';
 export {ctxLayer} from './ctxSource.js';
+import {loadHiriseMap} from '../terrain/hirise.js';
 import {matchedLocalMap} from '../terrain/ortho.js';
 async function ctxMetadata(signal){
  const response=await sourceFetch(ctxLayer.capabilities,{signal:AbortSignal.any([signal,AbortSignal.timeout(15000)])});if(!response.ok)throw new Error('No se pudo consultar CTX.');const advertised=parseCapabilities(await response.text(),'11');const service=advertised.template.split('/tile/')[0];const serviceResponse=await sourceFetch(service+'?f=json',{signal:AbortSignal.any([signal,AbortSignal.timeout(15000)])});if(!serviceResponse.ok)throw new Error('No se pudo consultar la cuadrícula CTX.');const metadata=await serviceResponse.json();const info=metadata.tileInfo,lod=info?.lods[0];if(!lod||info.origin.x!==-180||info.origin.y!==90||info.spatialReference.wkid!==104971)throw new Error('Cuadrícula planetaria CTX no compatible.');return{info,service};}
@@ -22,4 +23,4 @@ async function loadWindow(site,signal,level,{info,service}){
 }
 export function localCoordinates(map,x,z){return {lon:((map.west+(x/24+.5)*map.span+180)%360+360)%360-180,lat:map.north-(z/map.height+.5)*map.span};}
 
-export async function loadLocalMap(site,signal){try{const matched=await matchedLocalMap(site,signal);if(matched)return matched}catch(error){signal.throwIfAborted()}const metadata=await ctxMetadata(signal);let last;for(const level of [11,10,9]){const attempt=new AbortController();try{return await loadWindow(site,AbortSignal.any([signal,attempt.signal]),level,metadata)}catch(error){attempt.abort();signal.throwIfAborted();if(!error.decodeFailed&&!error.levelFailed)throw error;last=error}}throw last;}
+export async function loadLocalMap(site,signal){let qualityWarning='';if(site.detail==='hirise'){try{return await loadHiriseMap(site,signal)}catch(error){signal.throwIfAborted();qualityWarning='HiRISE no disponible; se conserva el contexto CTX/MOLA. '+error.message}}try{const matched=await matchedLocalMap(site,signal);if(matched)return{...matched,qualityWarning}}catch(error){signal.throwIfAborted()}const metadata=await ctxMetadata(signal);let last;for(const level of [11,10,9]){const attempt=new AbortController();try{return{...await loadWindow(site,AbortSignal.any([signal,attempt.signal]),level,metadata),qualityWarning}}catch(error){attempt.abort();signal.throwIfAborted();if(!error.decodeFailed&&!error.levelFailed)throw error;last=error}}throw last;}

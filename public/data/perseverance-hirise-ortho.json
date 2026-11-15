@@ -1,0 +1,25 @@
+{
+  "name": "Perseverance · HiRISE ortorrectificado",
+  "source": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first.tif",
+  "catalog": "https://doi.org/10.5066/P9REJ9JN",
+  "metadata": "https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first.xml",
+  "west": 77.4407663268994,
+  "north": 18.454737783687378,
+  "east": 77.461027923334,
+  "south": 18.434476187252784,
+  "width": 2402,
+  "height": 2402,
+  "spanLon": 0.020261596434593798,
+  "spanLat": 0.020261596434593798,
+  "nativeMetersPerPixel": 0.25,
+  "displayMetersPerPixel": 0.5,
+  "sha256": "f3be3c69d611c60e86c0ef77cee7ca232cad98e315d6970ef819485ddf7fee93",
+  "sourceETag": "\"755fa7c86ddfeca7e2dd582fbd50e4ce-878\"",
+  "sourceWindow": [
+    51648,
+    50876,
+    56452,
+    55680
+  ],
+  "processing": "2 × 2 native-pixel area average to 0.5 m overview; transparent NoData; paired USGS TRN projection and bounds; no generated content"
+}

@@ -17,7 +17,6 @@ export default function AstronautHealth({minutes,picking}){
    <span className="suit-center"><HeartPulse size={20}/><strong>{Math.floor(s.oxygen)}<small>%</small></strong><span>O₂ · RESERVA</span></span>
   </button>
   <span className="suit-caption">ASTRONAUTA <b>SIM.</b></span>
-  <div className="suit-readings"><span><Clock3 size={12}/><strong>{Math.floor(s.remaining)}</strong> min</span><span title="No hay dosímetro humano conectado"><Radiation size={12}/>Sin sensor</span></div>
   {s.reserve&&<span className="suit-warning" role="status">{warning}</span>}
   {open&&<aside id="suit-details" className="suit-details" aria-label="Recursos del traje"><div className="suit-details-heading"><HeartPulse size={18}/><strong>Astronauta · recursos</strong><button onClick={()=>setOpen(false)} aria-label="Cerrar recursos del astronauta"><X size={16}/></button></div>
    <dl><div><dt><Wind size={15}/>Oxígeno disponible</dt><dd>{s.oxygen.toFixed(1)}% <small>simulado</small></dd></div><div><dt><Clock3 size={15}/>Autonomía restante</dt><dd>{Math.floor(s.remaining)} min</dd></div><div><dt><Radiation size={15}/>Dosis humana</dt><dd>Sin sensor <small>mSv</small></dd></div></dl>

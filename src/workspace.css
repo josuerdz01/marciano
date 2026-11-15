@@ -117,3 +117,11 @@
 .rover-cockpit.is-running .retro-readouts>div:last-child strong{color:#c9f7a2;text-shadow:0 0 8px rgb(164 229 117 / .25)}
 .rover-cockpit.is-running .retro-needle{color:#c9f7a2}
 @media(prefers-reduced-motion:reduce){.rover-cockpit .retro-speed,.rover-cockpit .retro-readouts>div:last-child strong{transition:none}}
+/* Brighter live dial; the dosimeter sits directly on the glass. */
+.rover-cockpit.is-running .retro-speed{color:#d1ffad;text-shadow:0 0 5px #b1f57b80,0 0 13px #b1f57b45}
+.rover-cockpit.is-running .retro-speedometer>svg{color:#c9f7a2;filter:drop-shadow(0 0 3px #b1f57b38)}
+.rover-cockpit.is-running .retro-needle{color:#dcffc2;filter:drop-shadow(0 0 3px #b1f57b80)}
+.rover-cockpit .header-radiation .header-dose,
+.rover-cockpit .header-radiation.radiation-exceeded .header-dose{background:none;border:0;box-shadow:none}
+.rover-cockpit .retro-instruments .header-dose>svg{width:25px;height:25px}
+.rover-cockpit .header-dose:focus-visible{outline:2px solid var(--accent);outline-offset:3px}

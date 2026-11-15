@@ -94,7 +94,7 @@ function App(){
  function selectTexture(id){setTextureId(id);setTerrainMode('imagery')}
  function openTab(value){setTab(value);setLayers(true)}
  useEffect(()=>setRouteSummaryDismissed(false),[planner.route]);
- const instrumentsActive=Boolean(planner.route&&!planner.arrived||planner.status==='calculating'&&planner.points.b),instrumentsVisible=surface&&(instrumentsActive||mapView==='rover'&&!overview&&roverFocused);
+ const instrumentsActive=Boolean(planner.route||planner.status==='calculating'&&planner.points.b),instrumentsVisible=surface&&(instrumentsActive||mapView==='rover'&&!overview&&roverFocused);
  const dockRoute=Boolean(planner.route&&!planner.pick&&planner.status==='ready'&&(quickRoute||!routeSummaryDismissed));
  const routeControls=<RouteCursor docked={dockRoute} planner={planner} anchor={routeAnchor} onRetryStart={()=>beginQuickRoute()} onChangeDestination={()=>beginQuickRoute()} onGo={()=>planner.calculate({autoRun:true})} onCancel={cancelQuickRoute} onDetails={()=>openTab('ruta')}/>;
  const localReady=surface&&local.result;const displayedSite=localReady?local.result.site:site;const siteCovered=local.result?.isCovered(...local.result.start);

@@ -85,3 +85,17 @@
 @media(max-width:1000px){.rover-console>.rover-cockpit .retro-content{padding:10px 13px 12px}.rover-console>.quick-route-summary.is-docked{width:min(390px,90%);margin-right:10px}.quick-route-summary.is-docked .quick-route-main{gap:9px}}
 
 .rover-console{--retro-line:#c6d1ab25}
+
+/* A centred saddle: both lower corners flow concavely into the console. */
+.rover-console>.quick-route-summary.is-docked{align-self:center;width:min(380px,76%);margin:0 0 -1px;padding:8px 12px 6px;border-radius:20px 20px 0 0;border-left:0;border-right:0}
+.quick-route-summary.is-docked:before{display:none}
+.route-dock-join{position:absolute;width:28px;height:28px;bottom:0;pointer-events:none;overflow:visible}
+.route-dock-join.left{left:-28px}.route-dock-join.right{right:-28px;transform:scaleX(-1)}
+.quick-route-summary.is-docked .quick-route-main{gap:9px}
+.quick-route-summary.is-docked .icon{width:26px;height:26px}
+.quick-route-summary.is-docked .quick-route-main>div{min-width:100px}
+.route-dock-notices{margin-top:4px;padding-top:4px}
+@media(max-width:1000px){.rover-console>.quick-route-summary.is-docked{width:min(360px,80%);margin-right:0}}
+
+.route-dock-join{background:var(--instrument-glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);clip-path:path('M0 28C15.46 28 28 15.46 28 0V28Z')}
+.route-dock-join>svg{display:block;width:100%;height:100%}

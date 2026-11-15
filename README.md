@@ -217,3 +217,15 @@ Durante desplazamiento real, la antena mantiene un nivel luminoso de base y un p
 El mástil se divide en dos tramos y flexiona con resortes amortiguados a partir de las velocidades de cabeceo/balanceo de la suspensión y su aceleración vertical. No usa oscilación aleatoria ni un bucle de balanceo en reposo; el terreno visible sigue determinando el apoyo de las ruedas. Con movimiento reducido se suaviza la flexión y se usa luz constante durante el avance. La respuesta es visual y simbólica, limitada por la resolución del DEM.
 
 QA: pruebas de reposo sobre suelo plano, respuesta a pendientes/baches, amortiguación, límites de flexión, movimiento reducido y luz en marcha/reposo. En navegador se observaron emisiones de 11.285 y 12.179 durante el avance, cambios de flexión asociados al relieve y emisión 0.180 sin halo al pausar.
+
+### Paneles independientes y navegación con rebote
+
+Búsqueda, catálogo, categorías y visibilidad de puntos viven en el panel izquierdo. Planeta usa el catálogo de diez aterrizajes históricos; Explorar usa los 2,054 lugares IAU/USGS. Elegir un resultado navega directamente al sitio. Cada vista reinicia el texto de búsqueda para no aplicar el nombre de un accidente geográfico al catálogo de misiones.
+
+La barra vertical derecha abre Capas, Misión, Rover y Datos en un panel independiente: extensión del mapa, cenital/3D, modos del DEM, curvas, geología, texturas y retícula. Ambos paneles se pueden abrir/cerrar por separado. La malla/cámara no cambian de tamaño al abrirlos. En ventanas estrechas de escritorio se reserva espacio inferior para el tablero y la conducción.
+
+El indicador activo del header adapta `SlidingPill` de WaterWiki: desplazamiento de 650 ms, sobrepaso del 12% y retorno del 3% antes de asentarse. Cambios rápidos parten de la posición animada actual; movimiento reducido desactiva el rebote. Se conservan enlaces, navegación por teclado y enlace activo con `aria-current`. La barra vertical permite foco con flechas, Inicio y Fin sin conducir el rover.
+
+El tablero sólo se comprimió verticalmente (~181 px de alto en QA, 400 px de ancho), conservando posición, velocímetro, ritmo, tiempo de viaje, distancia, margen, estado, los cuatro ajustes de misión, controles de viaje, inclinación y factor temporal. Los paneles no lo ocultan.
+
+QA de esta organización: 78 pruebas aprobadas. En navegador se verificaron ambos paneles simultáneos e independientes, búsqueda de Belva y navegación directa conservando el panel derecho, el catálogo de diez aterrizajes en Planeta, cambio cenital/3D desde Capas y cambio Misión ↔ Capas. El indicador del header se observó en una posición intermedia durante su desplazamiento. El tablero midió 400 × 180.5 px y conservó sus cinco inputs. El movimiento del rover basado en el relieve y la antena flexible se mantienen.

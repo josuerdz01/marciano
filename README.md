@@ -297,3 +297,9 @@ Las barras verticales de Capas/Misión/Rover/Datos y Mover/Girar comparten un in
 ### Anclaje de extremos de ruta
 
 A/B/C comparten la posición y altura del marcador de suelo; se retiró el desplazamiento fijo de 0.8 unidades 3D que hacía flotar sus etiquetas lejos de la ruta al acercar o inclinar la cámara. La separación para evitar el rover sigue siendo sólo en pantalla, con línea al ancla real. No cambian coordenadas del DEM ni puntos del cálculo.
+
+## Piloto, cúpula y faro
+
+El rover original conserva su color liquen y la antena flexible anclada al chasis. Un astronauta con traje permanece junto al vehículo cuando está detenido y saluda. Al iniciar o continuar una ruta, sube durante una transición de tres segundos; la cúpula transparente se cierra antes de habilitar la tracción. Pausar o llegar detiene el movimiento antes de abrir la cúpula y descender. La transición se puede invertir sin saltos y respeta movimiento reducido. El tiempo de embarque no añade distancia ni dosis de avance. Son animaciones simbólicas, no una simulación fisiológica o de presurización.
+
+El faro dirige un spotlight hacia abajo en la escena principal del terreno. Una huella luminosa suave se adapta a sus alturas, también en modos de materiales cartográficos; el haz y la cúpula son recursos visuales, no nuevas mediciones científicas.

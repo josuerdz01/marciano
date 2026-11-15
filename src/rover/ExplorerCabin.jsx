@@ -4,23 +4,32 @@ import {RoundedBox} from '@react-three/drei';
 import * as THREE from 'three';
 
 // Original open cockpit and suited pilot, built from project-owned geometry.
-export default function ExplorerCabin(){
- const pilot=useRef(),arm=useRef(),hand=useRef(),started=useRef(null);
+export default function ExplorerCabin({boarding,chassis}){
+ const pilot=useRef(),arm=useRef(),hand=useRef(),started=useRef(null),canopy=useRef(),legs=useRef([]),identity=useRef(new THREE.Quaternion());
  useFrame(({clock})=>{
   started.current??=clock.elapsedTime;
   const elapsed=clock.elapsedTime-started.current;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const phase=elapsed%12;
-  const greeting=reduced?0:THREE.MathUtils.smoothstep(phase,.4,1.5)*(1-THREE.MathUtils.smoothstep(phase,5,6.2));
-  pilot.current.position.y=.04*greeting;
+  const progress=boarding.current.progress,stand=THREE.MathUtils.smoothstep(progress,.22,.92);
+  const greeting=!boarding.current.wantsMotion&&stand>.98&&!reduced?1:0;
+  const outside=boarding.current.outside;
+  pilot.current.position.set(outside.x*stand,outside.y*stand+Math.sin(Math.PI*stand)*.42,outside.z*stand);
+  pilot.current.quaternion.copy(chassis.current.quaternion).invert().slerp(identity.current,1-stand);
   arm.current.rotation.z=.25+greeting*2.35;
-  hand.current.rotation.z=greeting*Math.sin(elapsed*8)*.5;
+  hand.current.rotation.z=greeting*Math.sin(elapsed*7)*.5;
+  legs.current.forEach((leg,i)=>{if(leg)leg.rotation.x=-1.1*(1-stand)+Math.sin(elapsed*11+i*Math.PI)*Math.sin(Math.PI*stand)*.35});
+  canopy.current.rotation.x=-THREE.MathUtils.smoothstep(progress,.02,.22)*1.45;
  });
  return <group>
   <RoundedBox args={[.88,.22,.68]} radius={.1} position={[0,.3,-.04]}><meshStandardMaterial color="#e8e4d3" roughness={.65}/></RoundedBox>
   <RoundedBox args={[.66,.05,.47]} radius={.08} position={[0,.425,-.04]}><meshStandardMaterial color="#28392f" roughness={.8}/></RoundedBox>
   <RoundedBox args={[.4,.25,.12]} radius={.05} position={[0,.5,-.2]}><meshStandardMaterial color="#59694b"/></RoundedBox>
+  <group ref={canopy} position={[0,.43,-.32]}>
+   <mesh position={[0,0,.28]} scale={[.48,.65,.43]}><sphereGeometry args={[1,32,20,0,Math.PI*2,0,Math.PI/2]}/><meshStandardMaterial color="#d7eee2" transparent opacity={.19} roughness={.16} metalness={.15} side={THREE.DoubleSide} depthWrite={false}/></mesh>
+   <mesh position={[0,0,.28]} rotation={[Math.PI/2,0,0]} scale={[.48,.43,1]}><torusGeometry args={[1,.035,8,32]}/><meshStandardMaterial color="#c6d1ae"/></mesh>
+  </group>
   <group ref={pilot}>
+   {[-.085,.085].map((x,i)=><group key={i} ref={el=>legs.current[i]=el} position={[x,.42,-.02]}><mesh position={[0,-.16,0]}><capsuleGeometry args={[.065,.22,4,10]}/><meshStandardMaterial color="#e8e4d3"/></mesh><RoundedBox args={[.14,.09,.2]} radius={.035} position={[0,-.36,.04]}><meshStandardMaterial color="#53664c"/></RoundedBox></group>)}
    <RoundedBox args={[.3,.3,.23]} radius={.08} position={[0,.57,-.04]}><meshStandardMaterial color="#e8e4d3" roughness={.8}/></RoundedBox>
    <RoundedBox args={[.23,.19,.08]} radius={.04} position={[0,.58,-.18]}><meshStandardMaterial color="#c6d1ae"/></RoundedBox>
    <mesh position={[0,.78,0]}><sphereGeometry args={[.195,24,20]}/><meshStandardMaterial color="#f1eddd" roughness={.55}/></mesh>

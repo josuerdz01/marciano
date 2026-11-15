@@ -1,3 +1,4 @@
+import {radiationStats} from './hazards.js';
 import {findRoute} from './astar.js';
 // Terrain planning only. A replan keeps the original base as the return target.
 export function missionRoute(grid,a,b,science,options){
@@ -11,4 +12,4 @@ export function assessMission(route,{speed,budget,reserve,stopMinutes,elapsedMin
  const roundTripDistance=route.distance+(route.returnDistance??route.distance),travelMinutes=roundTripDistance/(speed*1000)*60,totalMinutes=elapsedMinutes+travelMinutes+stopMinutes,usableMinutes=budget*(1-reserve/100);
  return {travelMinutes,totalMinutes,usableMinutes,marginMinutes:usableMinutes-totalMinutes,withinBudget:totalMinutes<=usableMinutes,roundTripDistance};
 }
-export function calculateRoutes({grid,a,b,science,maxSlope,base}){const routes= [{...missionRoute(grid,a,b,science,{maxSlope,weight:0}),id:'short',name:'Menor distancia'},{...missionRoute(grid,a,b,science,{maxSlope,weight:8}),id:'gentle',name:'Menor coste por pendiente'}];if(base!=null)for(const route of routes)route.returnDistance=missionRoute(grid,b,base,null,{maxSlope,weight:route.id==='gentle'?8:0}).distance;return routes}
+export function calculateRoutes({grid,a,b,science,maxSlope,base}){const routes= [{...missionRoute(grid,a,b,science,{maxSlope,weight:0}),id:'short',name:'Menor distancia'},{...missionRoute(grid,a,b,science,{maxSlope,weight:8}),id:'gentle',name:'Menor coste por pendiente'}];if(base!=null)for(const route of routes){const back=missionRoute(grid,b,base,null,{maxSlope,weight:route.id==='gentle'?8:0});route.returnDistance=back.distance;if(grid.radiation)route.returnHazard=radiationStats(back,grid);}return routes}

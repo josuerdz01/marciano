@@ -53,3 +53,9 @@ La consola compacta conserva la silueta original, el tacómetro y todas las lect
 El medidor con icono de radiación se concentra en el astronauta, con barra verde–amarillo–naranja–rojo–magenta respecto al umbral del escenario. El umbral se edita junto a su tasa en los ajustes del astronauta. La lectura local del rover sigue siendo un índice relativo sin icono dosimétrico.
 
 El enfoque de salida interpola distancia, elevación y orientación hacia el frente del vehículo por el arco más corto. Solo cuando termina se libera la secuencia de saludo, abordaje y avance. El encuadre reserva espacio para la consola sin alterar la posición geográfica del rover.
+
+### Detalle orbital y riesgos de recorrido
+- La vista orbital limpia desactiva el color analítico y sus superposiciones, conservando la foto CTX/Viking real. CTX entrega aproximadamente 5–6 m/píxel según nivel y cobertura; no inventa detalle subpíxel ni geometría de cráteres. La malla sintética permanece identificada.
+- A* intenta primero excluir intensidad relativa ≥3 en ida y retorno, luego usa coste cuadrático por intensidad si no hay conexión. La advertencia cuantifica metros de tramos expuestos en ambos sentidos y pico relativo. No representa mSv, predicción de dosis humana ni medición local. GRS y obstáculos siguen siendo exclusiones duras, incluso en fallback.
+- Doble clic sobre suelo regional añade/retira círculos de bloqueo de 50–500 m. Deshacer y limpiar están en Capas. Se conservan solo en la zona/sesión actual. La ruta activa se pausa y recalcula desde la posición del rover, manteniendo la base de regreso y los parámetros.
+- Se reutilizan geometría/normales al cambiar color, se omite wireframe sobre fotografía y se cachea el campo de riesgos por cuadrícula/política. No se afirma un porcentaje de FPS sin medición.

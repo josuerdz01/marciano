@@ -9,7 +9,7 @@ export function findRoute(grid,start,end,{maxSlope=15,weight=6}={}){
  const col=i%width,row=Math.floor(i/width),a=cellCoordinates(grid,i);
  for(const[dc,dr]of offsets){const nc=col+dc,nr=row+dr;if(nc<0||nr<0||nc>=width||nr>=height)continue;const j=nr*width+nc;if(!valid(j)||closed[j])continue;if(dc&&dr&&(!valid(row*width+nc)||!valid(nr*width+col)))continue;
  const d=metricDistance(a,cellCoordinates(grid,j),grid.radius),grade=Math.atan(Math.abs(values[j]-values[i])/d)*180/Math.PI;if(grade>maxSlope)continue;
- const steep=Math.max(slopes[i],slopes[j],grade);const tentative=scores[i]+Math.hypot(d,values[j]-values[i])*(1+weight*(steep/maxSlope)**2);
+ const steep=Math.max(slopes[i],slopes[j],grade);const tentative=scores[i]+Math.hypot(d,values[j]-values[i])*(1+weight*(steep/maxSlope)**2+(grid.radiation?12*((grid.radiation[i]+grid.radiation[j])/2/Math.max(.1,grid.radiationThreshold))**2:0));
  if(tentative<scores[j]){scores[j]=tentative;parent[j]=i;heap.push({i:j,f:tentative+metricDistance(cellCoordinates(grid,j),target,grid.radius)})}
  }
  }

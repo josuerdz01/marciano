@@ -1,0 +1,13 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {calculateAdaptiveRoutes} from '../src/routing/autofit.js';
+import {hazardGrid} from '../src/routing/hazards.js';
+import {cellCoordinates} from '../src/routing/geometry.js';
+const grid=()=>({width:9,height:9,west:0,north:.009,stepLon:.001,stepLat:.001,radius:3396190,values:new Float32Array(81),mask:new Uint8Array(81).fill(1),slopes:new Float32Array(81),radiation:new Float32Array(81),radiationThreshold:3});
+test('routes detour around intense scenario cells on both outward and return paths',()=>{const g=grid();g.radiation[40]=5;const r=calculateAdaptiveRoutes({grid:g,a:36,b:44,base:36,maxSlope:15});assert.ok(r.routes.every(r=>!r.path.includes(40)&&r.radiation.exposedMeters===0));assert.equal(g.mask[40],1)});
+test('unavoidable radiation is penalized but reported, never silently called safe',()=>{const g=grid();for(let row=0;row<9;row++)g.radiation[row*9+4]=5;const r=calculateAdaptiveRoutes({grid:g,a:36,b:44,base:36,maxSlope:15});assert.ok(r.routes.every(r=>r.radiation.exposedMeters>0&&r.radiation.peak===5));});
+test('radiation fallback cannot cross a manual exclusion or missing data',()=>{const g=grid();for(let row=0;row<9;row++){g.mask[row*9+4]=0;g.radiation[row*9+4]=5}assert.throws(()=>calculateAdaptiveRoutes({grid:g,a:36,b:44,base:36,maxSlope:15}));});
+test('manual circles mask grid cells without mutating DEM and force a detour',()=>{const g=grid(),obstacle={...cellCoordinates(g,40),radius:45},map={data:null};const h=hazardGrid(g,map,{obstacles:[obstacle]});assert.equal(h.mask[40],0);assert.equal(g.mask[40],1);assert.ok(calculateAdaptiveRoutes({grid:h,a:36,b:44,base:36,maxSlope:15}).routes.every(r=>!r.path.includes(40)));});
+test('hazard field samples the same geo-referenced relative values as the display',()=>{const g=grid(),rad=new Float32Array(81).fill(1);rad[40]=4;const h=hazardGrid(g,{data:{...g,fields3D:{rad}}});assert.equal(h.radiation[40],4);assert.equal(h.radiationThreshold,3);});
+test('a return base inside an intense cell is reported even if the outward leg avoids it',()=>{const g=grid();g.radiation[4]=5;const r=calculateAdaptiveRoutes({grid:g,a:36,b:44,base:4,maxSlope:15});assert.ok(r.routes.every(r=>r.radiation.exposedMeters>0&&r.radiation.peak===5));});
+test('a manual block on the destination cannot be relaxed to force a trip',()=>{const g=grid();g.mask[44]=0;g.radiation.fill(5);assert.throws(()=>calculateAdaptiveRoutes({grid:g,a:36,b:44,base:36,maxSlope:15}));});

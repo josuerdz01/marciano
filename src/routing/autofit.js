@@ -1,7 +1,16 @@
+import {radiationMask,radiationStats} from './hazards.js';
 import {calculateRoutes,assessMission} from './mission.js';
 import {chooseFeasibleRoute} from './cockpit.js';
 // Search only within supported scenario limits; unknown terrain and exclusion masks stay hard constraints.
-export function calculateAdaptiveRoutes(input){if(input.allowAdjustments===false)return{routes:calculateRoutes(input),slope:input.maxSlope};let error;const slopes=[input.maxSlope,...[5,10,15,20,25,30].filter(v=>v>input.maxSlope)];for(const slope of slopes){try{return{routes:calculateRoutes({...input,maxSlope:slope}),slope}}catch(e){error=e;if(input.a===input.b)break}}throw error}
+function terrainRoutes(input){if(input.allowAdjustments===false)return{routes:calculateRoutes(input),slope:input.maxSlope};let error;const slopes=[input.maxSlope,...[5,10,15,20,25,30].filter(v=>v>input.maxSlope)];for(const slope of slopes){try{return{routes:calculateRoutes({...input,maxSlope:slope}),slope}}catch(e){error=e;if(input.a===input.b)break}}throw error}
+// First seek a route outside high-intensity cells, including its return leg.
+// Only that soft exclusion may relax. Obstacles, NoData and GRS exclusions remain blocked.
+export function calculateAdaptiveRoutes(input){
+ if(!input.grid.radiation)return terrainRoutes(input);
+ let result;try{result=terrainRoutes({...input,grid:radiationMask(input.grid)})}catch{result=terrainRoutes(input)}
+ for(const route of result.routes){const out=radiationStats(route,input.grid);const back=route.returnHazard||{exposedMeters:0,peak:0};route.radiation={exposedMeters:out.exposedMeters+back.exposedMeters,peak:Math.max(out.peak,back.peak),threshold:input.grid.radiationThreshold};}
+ return result;
+}
 export function fitMissionScenario(routes,settings,elapsedMinutes=0){const fits=s=>chooseFeasibleRoute(routes,{...s,elapsedMinutes},assessMission);let route=fits(settings);if(route)return{route,settings,changes:[]};
  const candidates=[];for(const r of routes){const next={...settings},distance=r.distance+(r.returnDistance??r.distance),budgetFor=()=>Math.ceil((elapsedMinutes+distance/(next.speed*1000)*60+next.stopMinutes)/(1-next.reserve/100)/10)*10;
  // Preserve pace, reserve and science when extending the time window is enough.

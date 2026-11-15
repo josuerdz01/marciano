@@ -305,3 +305,9 @@ El rover original conserva su color liquen y la antena flexible anclada al chasi
 El faro dirige un spotlight hacia abajo en la escena principal del terreno. Una huella luminosa suave se adapta a sus alturas, también en modos de materiales cartográficos; el haz y la cúpula son recursos visuales, no nuevas mediciones científicas.
 
 La escalera lateral tiene cuatro peldaños y pasamanos. La trayectoria del piloto sigue etapas de incorporarse, girar, pisar y descender; el saludo usa entrada y salida suaves con articulación de codo y muñeca.
+
+## Recuperación al seleccionar lugares
+
+Las descargas CTX reintentan una vez los errores transitorios y usan tres solicitudes simultáneas, con un límite global de 12 segundos para intentar ese contexto. Si no responde, la nueva región puede abrirse con teselas reales MOLA/HRSC o Viking de NASA Mars Trek, indicando la fuente de respaldo y preservando su máscara de cobertura. El DEM sigue cargándose por separado; no se inventan alturas ni se reutilizan imágenes de otro sitio. Si tampoco hay cartografía de respaldo, se conserva el mapa anterior con un mensaje legible y reintento.
+
+Las rutas resueltas pertenecen a un mapa, DEM y cuadrícula concretos. Al cambiar cualquiera de ellos se ocultan inmediatamente los recorridos y métricas anteriores, antes del efecto que reinicia el planificador. Las solicitudes canceladas no pueden activar un respaldo ni sustituir una selección posterior.

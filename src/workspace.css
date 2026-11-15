@@ -92,3 +92,15 @@
 .rover-cockpit.is-minimized .header-dose>span{display:none}
 .rover-cockpit .retro-heading .header-dose{width:auto;height:20px;white-space:nowrap}
 .rover-cockpit .header-dose strong{display:inline;white-space:nowrap}
+/* Dosimeter beside the journey instruments, in the requested right-hand space. */
+.rover-cockpit .retro-content{padding-left:30px;padding-right:30px}
+.rover-cockpit .retro-instruments{grid-template-columns:minmax(0,1fr) 86px 80px 52px;gap:7px}
+.rover-cockpit .retro-speedometer>svg{width:86px;height:77px}
+.rover-cockpit .retro-instruments>.header-radiation{align-self:center}
+.rover-cockpit .retro-instruments .header-dose{width:52px;min-height:64px;flex-direction:column;gap:5px;padding:6px 3px;border-radius:10px}
+.rover-cockpit .retro-instruments .header-dose>svg{width:18px;height:18px}
+.rover-cockpit .retro-instruments .header-dose>span{flex-direction:column;gap:3px;text-align:center}
+.rover-cockpit .retro-instruments .header-dose strong{font-size:10px;white-space:nowrap}
+.rover-cockpit .retro-instruments .header-dose strong>span{display:block;font-size:7px;margin-top:3px}
+.rover-cockpit .retro-instruments .header-dose small{font-size:6px}
+.rover-cockpit .retro-instruments .header-radiation .radiation-warning{right:-3px;bottom:calc(100% + 12px)}

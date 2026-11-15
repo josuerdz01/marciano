@@ -4,4 +4,16 @@ import {ctxLayer} from './ctxSource.js';
 export function surfaceDescription(color,detail){return{instrument:color&&detail?'Viking · VIS + MRO · CTX':color?'Viking · VIS':'MRO · CTX',name:color&&detail?'Color Viking con detalle CTX':color?'Mosaico Viking en color':'Mosaico CTX en grises',credit:color&&detail?'NASA/JPL-Caltech · USGS · MSSS · Caltech Murray Lab · Mars Trek':color?'NASA/JPL-Caltech · USGS · Mars Trek':ctxLayer.credit}}
 export async function composeSurface(color,detail){const canvas=document.createElement('canvas');canvas.width=canvas.height=3072;const ctx=canvas.getContext('2d');if(color)ctx.drawImage(color.texture.image,0,0,3072,3072);if(detail){const masked=document.createElement('canvas');masked.width=masked.height=3072;const m=masked.getContext('2d');m.drawImage(detail.texture.image,0,0,3072,3072);if(detail.coverageCanvas){m.globalCompositeOperation='destination-in';m.drawImage(detail.coverageCanvas,0,0,3072,3072)}ctx.globalCompositeOperation=color?'luminosity':'source-over';ctx.globalAlpha=color ? .85 : 1;ctx.drawImage(masked,0,0);ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1}const{CanvasTexture,SRGBColorSpace}=await import('three');const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace;return{texture,...surfaceDescription(Boolean(color),Boolean(detail)),metersPerPixel:(detail||color).metersPerPixel}}
 // Publish the colour preview first; detail failure leaves that usable image intact.
-export async function loadRegionalSurface(map,signal,onPreview,load=loadLocalLayer,compose=composeSurface){const requests=[load(map,getMarsLayer('viking'),signal,{coverage:true}),load(map,ctxLayer,signal,{coverage:true,size:3072})].map(p=>p.catch(error=>({error})));let color,detail,preview;try{color=await requests[0];if(color.error)color=null;signal.throwIfAborted();if(color){preview=await compose(color,null);signal.throwIfAborted();onPreview?.(preview)}detail=await requests[1];if(detail.error)detail=null;signal.throwIfAborted();if(detail)return await compose(color,detail);if(preview)return preview;throw Error('Las imágenes orbitales no están disponibles en esta zona.')}finally{color?.texture?.dispose();const pendingDetail=detail||(await requests[1]);pendingDetail?.texture?.dispose();if(signal.aborted)preview?.texture.dispose()}}
+export async function loadRegionalSurface(map,signal,onPreview,load=loadLocalLayer,compose=composeSurface){
+ const requests=[load(map,getMarsLayer('viking'),signal,{coverage:true}),load(map,ctxLayer,signal,{coverage:true,size:1536})].map(p=>p.catch(error=>({error})));let color,detail,high,preview;
+ try{
+  color=await requests[0];if(color.error)color=null;signal.throwIfAborted();
+  if(color){preview=await compose(color,null);signal.throwIfAborted();onPreview?.(preview)}
+  detail=await requests[1];if(detail.error)detail=null;signal.throwIfAborted();
+  if(detail){preview=await compose(color,detail);signal.throwIfAborted();onPreview?.(preview)}
+  high=await load(map,ctxLayer,signal,{coverage:true,size:3072}).catch(()=>null);signal.throwIfAborted();
+  if(high)return await compose(color,high);
+  if(preview)return preview;
+  throw Error('Las imágenes orbitales no están disponibles en esta zona.');
+ }finally{color?.texture?.dispose();const pendingDetail=detail||(await requests[1]);pendingDetail?.texture?.dispose();high?.texture?.dispose();if(signal.aborted)preview?.texture.dispose()}
+}

@@ -1,0 +1,24 @@
+import React,{useEffect,useId,useRef,useState} from 'react';
+import {Search,X,ArrowUpRight} from 'lucide-react';
+import PlaceIcon from './PlaceIcon';
+import {placeCategories,placeType} from './categories';
+const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+// Adapted from asignacion-codigos: merged preview, moving search icon and keyboard selection.
+export default function PlaceSearch({query,onQuery,category,onCategory,results,counts,landingOnly,onChoose,onOpenChange}){
+ const[open,setOpen]=useState(false),[focused,setFocused]=useState(false),[active,setActive]=useState(-1),root=useRef(null),input=useRef(null),listId=useId();
+ const types=landingOnly?[]:[{id:'all',label:'Todos los lugares',icon:'Map'},...placeCategories].filter(c=>!query.trim()||normalize(c.label).includes(normalize(query.trim())));
+ const options=[...types.map(type=>({id:'type-'+type.id,type})),...results.slice(0,5).map(place=>({id:place.id,place}))];
+ const current=placeCategories.find(c=>c.id===category),activated=focused||Boolean(query)||Boolean(current);
+ function expand(value){setOpen(value);onOpenChange(value);if(!value)setActive(-1)}
+ useEffect(()=>{if(!open)return;function outside(e){if(!root.current?.contains(e.target))expand(false)}document.addEventListener('pointerdown',outside);return()=>document.removeEventListener('pointerdown',outside)},[open]);
+ useEffect(()=>{setActive(-1)},[query,category,landingOnly]);
+ useEffect(()=>{if(active>=0)root.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'})},[active]);
+ function choose(option){if(option.type){onCategory(option.type.id);onQuery('');setActive(-1);input.current?.focus();expand(true)}else{expand(false);input.current?.blur();onChoose(option.place)}}
+ function submit(){expand(false);input.current?.blur()}
+ function keyDown(e){if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();e.stopPropagation();expand(true);const d=e.key==='ArrowDown'?1:-1;setActive(i=>options.length?(i<0?(d>0?0:options.length-1):(i+d+options.length)%options.length):-1)}else if(e.key==='Enter'){e.preventDefault();if(open&&options[active])choose(options[active]);else submit()}else if(e.key==='Escape'&&open){e.preventDefault();e.stopPropagation();expand(false)}}
+ return <div ref={root} className={`place-search-combo ${open?'preview-open':''} ${activated?'search-active':''}`}>
+ <div className="place-search-row"><input ref={input} type="search" role="combobox" aria-label="Buscar lugares en Marte" aria-expanded={open} aria-controls={listId} aria-autocomplete="list" aria-activedescendant={open&&options[active]?`${listId}-${active}`:undefined} value={query} placeholder={landingOnly?'Buscar aterrizajes':'Buscar lugar o tipo'} autoComplete="off" onFocus={()=>{setFocused(true);expand(true)}} onBlur={()=>setFocused(false)} onKeyDown={keyDown} onChange={e=>{onQuery(e.target.value);expand(true)}}/><button className="place-search-submit" aria-label="Buscar" aria-hidden={!activated} tabIndex={activated?0:-1} onMouseDown={e=>e.preventDefault()} onClick={submit}><Search size={17}/></button></div>
+ {current&&<div className="place-search-filter"><PlaceIcon type={current} size={13}/><span>{current.label}</span><button aria-label="Quitar filtro de tipo" onClick={()=>{onCategory('all');input.current?.focus()}}><X size={12}/></button></div>}
+ {open&&<div className="place-search-preview"><div role="listbox" id={listId} aria-label="Sugerencias de lugares y tipos" className="place-search-options">{['type','place'].map(kind=><div key={kind} role="group" aria-label={kind==='type'?'Tipos de lugar':'Lugares'}>{options.some(o=>o[kind])&&<div className="place-search-group" role="presentation">{kind==='type'?'Tipos de lugar':'Lugares'}</div>}<div className={kind==='type'?'place-search-types':''}>{options.filter(o=>o[kind]).map(option=>{const i=options.indexOf(option);return <React.Fragment key={option.id}><div role="option" id={`${listId}-${i}`} aria-selected={active===i} onMouseMove={()=>setActive(i)} onMouseDown={e=>e.preventDefault()} onClick={()=>choose(option)} className="place-search-option">{option.type?<><PlaceIcon type={option.type} size={17}/><span>{option.type.label}</span><small>{option.type.id==='all'?Object.values(counts).reduce((a,b)=>a+b,0):counts[option.type.id]||0}</small></>:<><PlaceIcon place={option.place} size={17}/><span>{option.place.name}<small>{placeType(option.place).singular} · {Math.abs(option.place.lat).toFixed(2)}°{option.place.lat<0?'S':'N'} · {Math.abs(option.place.lon).toFixed(2)}°{option.place.lon<0?'O':'E'}</small></span><ArrowUpRight size={14}/></>}</div></React.Fragment>})}</div></div>)}{!options.length&&<p className="place-search-empty">Sin coincidencias. Prueba otro nombre o quita el filtro.</p>}</div><button className="place-search-all" onClick={submit}>Ver {results.length.toLocaleString('es-MX')} resultados <ArrowUpRight size={14}/></button></div>}
+ </div>
+}

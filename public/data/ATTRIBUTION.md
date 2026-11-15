@@ -25,3 +25,11 @@ Source directory: https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/mar
 `perseverance-hirise-dem.f32.gz` is a 1201 × 1201 window, native 1 m float32 elevations, no smoothing or gap filling. Source vertical reference is retained; no vertical blending with another DEM is performed. `perseverance-hirise-ortho.png` covers the same approximately 1.2 km square, downsampled by area average from 25 cm to 50 cm. Invalid source pixels remain transparent. The explorer uses a smaller interior area with a sampling halo. Both JSON files preserve source URL, ETag, raster window, bounds, resolution and SHA-256; hashes are checked before use. Pixel spacing must not be interpreted as measured absolute accuracy. This local coverage does not imply a global 1 m Mars dataset.
 
 Preparation: scripts/prepare_hirise.mjs. No uploaded synthetic NPZ data is redistributed.
+
+## Odyssey GRS thorium
+
+TH_5X5, product version 2.0, ODY-M-GRS-5-ELEMENTS-V1.0, NASA 2001 Mars Odyssey Gamma Ray Spectrometer / GRS Science Team, University of Arizona. Archived by NASA PDS Geosciences Node. Observations 2002-06-04–2005-04-03; product creation 2006-03-09.
+
+Source and metadata URLs, original SHA-256 and column order appear in thorium-grs.json; the unmodified label is thorium-grs.lbl. Original data: https://pds-geosciences.wustl.edu/ody/ody-m-grs-5-elements-v1/odgm_xxxx/data/unsmoothed/5x5/th_5x5.tab . Catalog: https://pds-geosciences.wustl.edu/missions/odyssey/grs_elements.html . Science reference: Boynton et al. (2007), https://doi.org/10.1029/2007JE002887 .
+
+Adaptation: reordered north-up, longitudes −180 to 180, weight percent multiplied by 10000 to ppm. All 2592 unsmoothed bins retained, including negative background-subtracted estimates; invalid sentinel values become null. Sigma and sigma-with-CFS remain separate. No smoothing, no local hazard interpolation, no conversion of thorium to dose or radiation safety. Reproduce with scripts/prepare_thorium.py.

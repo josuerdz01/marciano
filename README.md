@@ -265,3 +265,7 @@ El tablero incluye **dosis electrónica simulada** en krad(Si), con presupuesto 
 La imagen orbital local usa un material rugoso iluminado por una luz lateral fija y luz ambiente contenida, en lugar de un material sin iluminación. Las normales provienen exclusivamente de la geometría del DEM; no se añaden baches, ruido ni alturas ficticias. La escala permanece 1:1 y las rutas conservan las elevaciones nativas. Elevación, pendiente y sombreado cuantitativos mantienen su material sin iluminación adicional para conservar sus colores. La iluminación es cartográfica, no una predicción del Sol actual. Con DEM de 200 m no pueden aparecer obstáculos de tamaño inferior a la fuente; para detalle local usar HiRISE donde existe cobertura.
 
 La carcasa retro del tablero mantiene tamaño y controles, con relleno translúcido, desenfoque del mapa detrás de la silueta, brillo de borde y campos de mayor transparencia. No se usa desenfoque sobre textos o agujas.
+
+### Destino directo desde el rover
+
+En el terreno local, un clic normal elige B y abre «Ir», sin seleccionar A ni activar antes un modo de inicio. A se ajusta a la celda con datos de la posición más reciente del rover. «Destino», «Cambiar B» y el panel Misión comparten ese inicio automático; se retiraron los controles para elegir A manualmente. Las consultas geológicas y la selección explícita de una parada conservan prioridad. El mapa global sigue cargando regiones al hacer clic, y los lugares conocidos conservan su navegación. El recálculo durante un viaje mantiene la base original para el retorno.

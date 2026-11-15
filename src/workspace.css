@@ -78,3 +78,17 @@
 .rover-cockpit .retro-go{background:rgb(202 219 166 / .14);border-color:rgb(224 240 201 / .16);box-shadow:inset 0 1px 0 rgb(242 255 224 / .14),0 1px 3px rgb(0 0 0 / .22)}
 .rover-cockpit .retro-throttle button{background:rgb(224 240 201 / .075);border-color:rgb(224 240 201 / .12)}
 .rover-cockpit .retro-go:hover,.rover-cockpit .retro-throttle button:hover{background:rgb(202 219 166 / .23)}
+/* Glass and bevel share the exact SVG contour, including rounded corners. */
+.rover-cockpit:before{clip-path:url(#cockpit-glass-clip);border-radius:0;box-shadow:none}
+.rover-cockpit .header-radiation{letter-spacing:normal}
+.rover-cockpit .header-dose{min-width:0;padding:2px 5px;gap:4px;border-radius:6px;background:rgb(202 219 166 / .08);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:inset 0 0 0 1px #e0f0c91a}
+.rover-cockpit .header-dose>svg{width:12px;height:12px;flex-shrink:0}
+.rover-cockpit .header-dose>span{flex-direction:row;align-items:center;gap:3px}
+.rover-cockpit .header-dose small:first-child{display:none}
+.rover-cockpit .header-dose small{font-size:6px;letter-spacing:0}
+.rover-cockpit .header-dose strong{font:9px ui-monospace,monospace;letter-spacing:0}
+.rover-cockpit .header-dose strong>span{font-size:7px}
+.rover-cockpit .header-radiation .radiation-warning{top:auto;bottom:calc(100% + 14px);width:300px;right:-24px;letter-spacing:normal}
+.rover-cockpit.is-minimized .header-dose>span{display:none}
+.rover-cockpit .retro-heading .header-dose{width:auto;height:20px;white-space:nowrap}
+.rover-cockpit .header-dose strong{display:inline;white-space:nowrap}

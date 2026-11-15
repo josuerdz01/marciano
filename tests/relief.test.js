@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {displayTerrain,reliefHeight,reliefStep,RELIEF_FACTOR} from '../src/terrain/relief.js';
+import {createTerrain,slopeAt} from '../src/terrain/model.js';
+import {makeRouteGrid} from '../src/routing/geometry.js';
+const map={site:{lon:0,lat:0},west:-.12,north:.12,span:.24,height:24,widthKm:14.2268,start:[0,0],isCovered:()=>true};
+const dem={width:26,height:26,west:-.13,north:.13,stepLon:.01,stepLat:.01,radius:3396190,values:Float32Array.from({length:26*26},(_,i)=>1000+(i%26)*8+Math.floor(i/26)*15)};
+test('visual realce exaggerates heights around the ground datum without changing the physical model',()=>{const source=createTerrain(map,dem),original=[...source.positions],view=displayTerrain(source),grid=makeRouteGrid(dem,map),slopes=[...grid.slopes],physicalSlope=slopeAt(source,0,0);view.visualFactor=RELIEF_FACTOR;assert.equal(view.physicalModel,source);for(const[x,z]of [[0,0],[4,3],[-5,7]])assert.ok(Math.abs(view.heightAt(x,z)-reliefHeight(source.heightAt(x,z),3))<1e-10);assert.deepEqual(source.positions,original);assert.equal(view.dem.values,dem.values);assert.deepEqual([...makeRouteGrid(dem,map).slopes],slopes);assert.equal(slopeAt(source,0,0),physicalSlope);assert.equal(view.heightAt(100,100),null);view.visualFactor=1;assert.equal(view.heightAt(4,3),source.heightAt(4,3))});
+test('a scaled surface, route anchor and rover ground sample share the same displayed height',()=>{const source=createTerrain(map,dem),view=displayTerrain(source,3);for(let x=-10;x<10;x+=2){const h=source.heightAt(x,2),rendered=h*3+.1*(3-1);assert.ok(Math.abs(rendered-view.heightAt(x,2))<1e-10)}assert.equal(reliefHeight(-.1,3),-.1);assert.equal(reliefHeight(null,3),null)});
+test('realce settles smoothly, respects reduced motion and is frame-rate independent',()=>{const sample=hz=>{let v=1;for(let i=0;i<hz;i++)v=reliefStep(v,3,1/hz);return v};assert.equal(sample(30),3);assert.equal(sample(60),3);assert.equal(reliefStep(1,3,.016,true),3);let value=1;for(let i=0;i<60;i++){const next=reliefStep(value,3,1/60);assert.ok(next>=value&&next<=3);value=next}assert.equal(value,3)});

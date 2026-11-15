@@ -1,0 +1,4 @@
+import {useMemo,useRef} from 'react';
+import {useFrame,useThree} from '@react-three/fiber';
+import {displayTerrain,reliefStep,RELIEF_FACTOR} from './relief';
+export default function useReliefView(source,enabled,controls){const group=useRef(),factor=useRef(1),model=useMemo(()=>displayTerrain(source,factor.current),[source]),{camera}=useThree();useFrame((_,dt)=>{const target=enabled?RELIEF_FACTOR:1,next=reliefStep(factor.current,target,dt,matchMedia('(prefers-reduced-motion: reduce)').matches),orbit=controls.current;if(next!==factor.current&&source&&orbit){const h=source.heightAt(orbit.target.x,orbit.target.z);if(h!=null){const shift=(h+.1)*(next-factor.current);camera.position.y+=shift;orbit.target.y+=shift}}factor.current=next;if(model)model.visualFactor=next;if(group.current){group.current.scale.y=next;group.current.position.y=.1*(next-1)}});return{group,model}}

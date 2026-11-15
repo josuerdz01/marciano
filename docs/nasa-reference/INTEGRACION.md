@@ -23,3 +23,9 @@ El zoom 2D entra en detalle 3D únicamente al llegar a la escala regional (dos v
 La malla usa las posiciones numéricas compartidas con rutas y ruedas. Se trasladaron del original los colores por vértice, el sombreado facetado y la cuadrícula al 5 % de opacidad. La capa de altura utiliza el rango de la región para hacer legibles los accidentes locales; esto cambia la escala de color, no la elevación ni las pendientes. Geología, radiación, sombreado y pendiente tienen representaciones regionales sincronizadas con el selector existente. Los focos se delinean siguiendo la superficie, sin aportar nuevas zonas medidas.
 
 Se conserva la cámara suave de Marsiano, la secuencia de enfoque, saludo y abordaje, y el seguimiento durante el viaje. La cámara cercana respeta una separación mínima del mismo relieve. No se copia la exageración vertical arbitraria del original ni su salto entre celdas redondeadas.
+
+## Relieve realzado opcional
+
+El panel permite activar «Relieve realzado» únicamente en Terreno 3D. Está desactivado de inicio y multiplica visualmente las diferencias de altura por tres alrededor del datum local. El cambio se interpola sin reconstruir la malla: una transformación del grupo mantiene unidos el terreno, sus superposiciones, las rutas y sus etiquetas. El vehículo y el astronauta conservan sus proporciones y se apoyan en un adaptador de altura de la superficie dibujada.
+
+El DEM, las pendientes del planificador, las distancias, la velocidad y el tiempo se calculan sobre el modelo físico sin exageración. El indicador de inclinación del tablero conserva esa referencia. La leyenda y el pie del mapa identifican el modo ×3; volver a 2D usa la escala 1:1 sin olvidar la preferencia para el siguiente detalle 3D.

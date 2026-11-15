@@ -125,3 +125,8 @@
 .rover-cockpit .header-radiation.radiation-exceeded .header-dose{background:none;border:0;box-shadow:none}
 .rover-cockpit .retro-instruments .header-dose>svg{width:25px;height:25px}
 .rover-cockpit .header-dose:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* Route confirmation actions share a baseline; primary has no inherited CTA margin. */
+.route-cursor-confirm>div{align-items:center;gap:12px}
+.route-cursor-confirm>div>button{margin:0;min-height:36px;display:inline-flex;align-items:center;justify-content:center;line-height:1;white-space:nowrap}
+.route-cursor-confirm .primary{margin:0}
+.route-cursor-confirm>div>.icon{width:32px;height:32px;min-height:32px;flex-shrink:0}

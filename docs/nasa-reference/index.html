@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marte Suite · Simulador 2D a 3D & Tablero Configurable del Rover</title>
+    <style>
+        :root {
+            --bg-dark: #0b0f0e;
+            --panel-bg: rgba(18, 24, 20, 0.92);
+            --panel-border: rgba(215, 230, 205, 0.18);
+            --accent-lime: #dce7b8;
+            --accent-orange: #ff9800;
+            --accent-cyan: #00e5ff;
+            --accent-green: #4ade80;
+            --accent-red: #ef4444;
+            --accent-purple: #d946ef;
+            --text-main: #f1f5f2;
+            --text-muted: #9aa89e;
+        }
+
+        * { box-sizing: border-box; user-select: none; }
+        body {
+            margin: 0; overflow: hidden;
+            background-color: var(--bg-dark);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-main);
+        }
+
+        /* BARRA SUPERIOR */
+        #top-header {
+            position: absolute; top: 12px; left: 18px; right: 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            z-index: 30; pointer-events: none;
+        }
+        .header-group {
+            pointer-events: auto; display: flex; align-items: center; gap: 10px;
+        }
+        .glass-pill {
+            background: var(--panel-bg); backdrop-filter: blur(12px);
+            border: 1px solid var(--panel-border); border-radius: 999px;
+            padding: 6px 14px; display: flex; align-items: center; gap: 10px;
+            font-size: 12px;
+        }
+        .logo-m {
+            width: 25px; height: 25px; border-radius: 50%;
+            border: 1.5px solid var(--accent-lime);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: var(--accent-lime);
+        }
+        .btn-top {
+            background: rgba(255,255,255,0.08); border: 1px solid var(--panel-border);
+            color: var(--text-main); padding: 6px 14px; border-radius: 999px;
+            font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.15s;
+        }
+        .btn-top:hover, .btn-top.active { background: var(--accent-lime); color: #111; }
+        .btn-cta {
+            background: var(--accent-orange); color: #111; border: none;
+            padding: 7px 16px; border-radius: 999px; font-weight: 700;
+            font-size: 12px; cursor: pointer;
+        }
+        .btn-cta:hover { background: #ffc107; }
+
+        /* VISTA 2D GLOBAL */
+        #view-2d {
+            position: absolute; inset: 0; display: flex;
+            padding: 58px 18px 42px 18px; gap: 14px; z-index: 20;
+            background: var(--bg-dark);
+        }
+        #map2d-container {
+            flex: 1; position: relative;
+            background: #070a09; border: 1px solid var(--panel-border);
+            border-radius: 12px; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        #map2d-header {
+            background: rgba(14, 19, 16, 0.95); padding: 7px 14px;
+            font-size: 12px; font-family: 'Courier New', monospace;
+            color: var(--accent-lime); border-bottom: 1px solid var(--panel-border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        #canvas-2d { flex: 1; width: 100%; height: 100%; cursor: grab; display: block; }
+        #canvas-2d:active { cursor: grabbing; }
+
+        #zoom-progress-bar {
+            position: absolute; top: 42px; left: 14px;
+            background: rgba(12, 16, 14, 0.88); border: 1px solid var(--panel-border);
+            border-radius: 8px; padding: 6px 12px; font-size: 11.5px;
+            pointer-events: none; display: flex; align-items: center; gap: 10px;
+        }
+        .zoom-track {
+            width: 110px; height: 7px; background: rgba(255,255,255,0.12);
+            border-radius: 4px; overflow: hidden;
+        }
+        #zoom-fill { height: 100%; width: 0%; background: var(--accent-orange); transition: width 0.1s; }
+
+        #map2d-help {
+            position: absolute; bottom: 10px; left: 12px;
+            background: rgba(12, 16, 14, 0.88); border: 1px solid var(--panel-border);
+            padding: 6px 12px; border-radius: 8px; font-size: 11px; color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* BARRA LATERAL 2D */
+        #sidebar-2d { width: 320px; display: flex; flex-direction: column; gap: 10px; }
+        .panel-box {
+            background: var(--panel-bg); backdrop-filter: blur(12px);
+            border: 1px solid var(--panel-border); border-radius: 12px; padding: 11px 14px;
+        }
+        .panel-title {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.8px; color: var(--accent-lime); margin-bottom: 7px;
+        }
+        .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11.5px; }
+        .controls-grid label { display: flex; align-items: center; gap: 6px; margin: 3px 0; cursor: pointer; }
+        #legend-2d { font-size: 11px; line-height: 1.45; overflow-y: auto; max-height: 330px; }
+        .leg-row { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
+        .leg-box { width: 16px; height: 11px; border: 1px solid #111; flex-shrink: 0; }
+        .leg-line { width: 20px; height: 0; border-top-width: 2.5px; flex-shrink: 0; }
+
+        /* INTERFAZ 3D */
+        #view-3d-ui { position: absolute; inset: 0; pointer-events: none; z-index: 15; display: none; }
+        .ui-auto { pointer-events: auto; }
+
+        #left-3d {
+            position: absolute; top: 58px; left: 18px; width: 365px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        #hud-box {
+            font-family: 'Courier New', monospace; font-size: 11px;
+            line-height: 1.45; background: rgba(14, 19, 16, 0.92);
+            border-left: 3.5px solid var(--accent-green);
+        }
+        .sensor-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 5px;
+            font-family: 'Courier New', monospace; font-size: 11px;
+        }
+        .sensor-item {
+            background: rgba(0,0,0,0.38); border-left: 2.5px solid var(--accent-cyan);
+            padding: 4px 8px; border-radius: 4px;
+        }
+        .sensor-item span { display: block; font-size: 8.5px; color: var(--text-muted); font-family: sans-serif; }
+
+        #rad-danger-box {
+            border-left: 3.5px solid var(--accent-purple);
+            background: rgba(24, 16, 28, 0.90);
+        }
+        .rad-bar-bg {
+            width: 100%; height: 9px; background: rgba(255,255,255,0.1);
+            border-radius: 999px; overflow: hidden; margin: 4px 0;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        #rad-meter-fill {
+            height: 100%; width: 12%;
+            background: linear-gradient(90deg, #4ade80, #facc15, #f97316, #ef4444, #d946ef);
+            transition: width 0.2s;
+        }
+        .astro-box {
+            margin-top: 5px; padding: 6px 8px; border-radius: 6px;
+            background: rgba(0,0,0,0.45); border: 1px solid rgba(217, 70, 239, 0.35);
+            font-size: 10.8px; line-height: 1.38;
+        }
+
+        #right-3d {
+            position: absolute; top: 58px; right: 18px; width: 260px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .layer-btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .l3d-btn {
+            background: rgba(255,255,255,0.07); border: 1px solid var(--panel-border);
+            color: var(--text-main); padding: 6px 8px; border-radius: 7px;
+            font-size: 11px; cursor: pointer;
+        }
+        .l3d-btn.active { background: var(--accent-lime); color: #111; font-weight: 700; }
+        .param-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin: 4px 0; }
+        .param-row input { width: 95px; accent-color: var(--accent-lime); }
+
+        /* ================= DASHBOARD INFERIOR CONFIGURABLE (MEJORADO) ================= */
+        #dashboard-3d {
+            position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+            background: rgba(16, 22, 18, 0.94); backdrop-filter: blur(18px);
+            border: 1px solid rgba(215, 230, 205, 0.22); border-radius: 18px;
+            padding: 12px 18px; width: 820px; max-width: 96vw;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.75);
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        /* Fila 1: Lectores principales de travesía y radiación */
+        .dash-metrics-row {
+            display: grid;
+            grid-template-columns: 1.15fr 1.15fr 1.15fr 1.35fr 0.9fr 1.1fr;
+            gap: 10px; align-items: center;
+        }
+        .stat-lbl {
+            font-size: 9px; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.5px; display: block;
+        }
+        .stat-num {
+            background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 7px; padding: 5px 8px; font-family: 'Courier New', monospace;
+            font-size: 13px; font-weight: 700; margin-top: 3px; white-space: nowrap;
+        }
+
+        /* Barra integrada de tolerancia del astronauta en el dashboard */
+        .astro-dash-bar {
+            width: 100%; height: 6px; background: rgba(255,255,255,0.12);
+            border-radius: 4px; overflow: hidden; margin-top: 4px;
+        }
+        #d-astro-bar-fill {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, #4ade80, #facc15, #ef4444, #d946ef);
+            transition: width 0.2s;
+        }
+
+        /* Fila 2: Controles interactivos de configuración en el propio dashboard */
+        .dash-config-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1.2fr 1.2fr 1.1fr;
+            gap: 12px; align-items: center;
+            padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .cfg-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 8px; padding: 5px 10px;
+        }
+        .cfg-card-top {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 10.5px; color: var(--text-muted); margin-bottom: 3px;
+        }
+        .cfg-card-top b { color: var(--accent-lime); font-family: 'Courier New', monospace; font-size: 11.5px; }
+        .cfg-card input[type="range"] {
+            width: 100%; height: 5px; accent-color: var(--accent-orange); cursor: pointer;
+        }
+
+        /* ETIQUETAS 3D FLOTANTES */
+        #labels-3d { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        .tag-3d {
+            position: absolute; transform: translate(-50%, -130%);
+            padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.6); display: none; white-space: nowrap;
+        }
+        .tag-a { background: #00e5ff; color: #000; border: 2px solid #fff; }
+        .tag-b { background: #ffd600; color: #000; border: 2px solid #fff; }
+        .tag-astro {
+            background: #d946ef; color: #fff; border: 2px solid #fff;
+            animation: pulse-rad 1.4s infinite;
+        }
+        @keyframes pulse-rad {
+            0%, 100% { transform: translate(-50%, -130%) scale(1); }
+            50% { transform: translate(-50%, -130%) scale(1.08); }
+        }
+
+        /* BARRA DE ESTADO INFERIOR */
+        #status-bar {
+            position: absolute; bottom: 4px; left: 18px; right: 18px;
+            background: rgba(15, 20, 17, 0.94); border: 1px solid var(--panel-border);
+            border-radius: 7px; padding: 4px 12px;
+            font-family: 'Courier New', monospace; font-size: 11px;
+            color: var(--accent-cyan); z-index: 35;
+            display: flex; justify-content: space-between;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <div id="top-header">
+        <div class="header-group">
+            <div class="glass-pill">
+                <div class="logo-m">m</div>
+                <div>
+                    <div style="font-weight:700;">MARTE SUITE · 2D ➔ 3D & DOSIMETRÍA ESPACIAL</div>
+                    <div style="font-size:10px; color:var(--text-muted);" id="region-subtitle">Cartografía SIM3292 + MOLA + Zonas de Radiación</div>
+                </div>
+            </div>
+            <label class="glass-pill" style="cursor:pointer;">
+                <input type="checkbox" id="chk-auto-3d" checked style="accent-color:var(--accent-orange);">
+                <span>Auto-3D al acercar zoom (&lt; 28°)</span>
+            </label>
+        </div>
+
+        <div class="header-group">
+            <button class="btn-top active" id="btn-go-2d">🗺️ Mapa Global 2D (H)</button>
+            <button class="btn-cta" id="btn-sim-now">▶ Renderizar Zona Visible en 3D (M)</button>
+        </div>
+    </div>
+
+    <!-- ================= VISTA 2D GLOBAL ================= -->
+    <div id="view-2d">
+        <div id="map2d-container">
+            <div id="map2d-header">
+                <span id="title-2d">MARTE — vista global</span>
+                <span style="color:var(--accent-purple);">☢️ Círculos Violeta/Rojo = Anomalías de Radiación Solar y Cósmica</span>
+            </div>
+            <canvas id="canvas-2d"></canvas>
+
+            <div id="zoom-progress-bar">
+                <span>Nivel de acercamiento 2D ➔ 3D:</span>
+                <div class="zoom-track"><div id="zoom-fill"></div></div>
+                <b id="zoom-span-lbl" style="color:var(--accent-lime);">360°</b>
+            </div>
+
+            <div id="map2d-help">
+                🖱️ <b>Rueda:</b> Zoom (al bajar de 28° entra en 3D automáticamente) &nbsp;|&nbsp;
+                <b>Arrastrar Izq:</b> Mover mapa &nbsp;|&nbsp;
+                <b>Shift + Arrastrar Izq:</b> Seleccionar rectángulo a 3D &nbsp;|&nbsp;
+                <b>Tecla H:</b> Planeta completo &nbsp;|&nbsp; <b>Tecla M:</b> Pasar vista a 3D
+            </div>
+        </div>
+
+        <div id="sidebar-2d">
+            <div class="panel-box">
+                <div class="panel-title">Capas y Controles (Mapa_mars_ver1.qgs)</div>
+                <div class="controls-grid">
+                    <div>
+                        <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">CAPA BASE (Teclas 1-5)</div>
+                        <label><input type="radio" name="l2d" value="0" checked> 1. Altura + relieve</label>
+                        <label><input type="radio" name="l2d" value="1"> 2. Relieve sombreado</label>
+                        <label><input type="radio" name="l2d" value="2"> 3. Geología SIM3292</label>
+                        <label><input type="radio" name="l2d" value="3"> 4. Pendiente regional</label>
+                        <label><input type="radio" name="l2d" value="4"> 5. ☢️ Mapa Radiación</label>
+                    </div>
+                    <div>
+                        <div style="font-size:10px; color:var(--text-muted); margin-bottom:3px;">SUPERPOSICIONES</div>
+                        <label><input type="checkbox" id="chk-2d-struct" checked> Estructuras (e)</label>
+                        <label><input type="checkbox" id="chk-2d-hard"> Solo bloqueos (b)</label>
+                        <label><input type="checkbox" id="chk-2d-rad" checked> Focos Radiación</label>
+                        <label><input type="checkbox" id="chk-2d-sites" checked> Sitios (a)</label>
+                        <label><input type="checkbox" id="chk-2d-grid"> Cuadrícula (g)</label>
+                    </div>
+                </div>
+                <button class="btn-top" id="btn-reset-zoom" style="width:100%; margin-top:8px;">🌍 Ver Planeta Completo (H)</button>
+            </div>
+
+            <div class="panel-box" style="flex:1; display:flex; flex-direction:column; overflow:hidden;">
+                <div class="panel-title">Leyenda Científica y Radiación</div>
+                <div id="legend-2d"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VISTA 3D DE LA ZONA SELECCIONADA ================= -->
+    <div id="view-3d-ui">
+        <div id="labels-3d">
+            <div id="tag-a" class="tag-3d tag-a">A (Inicio)</div>
+            <div id="tag-b" class="tag-3d tag-b">B (Meta)</div>
+            <div id="tag-astro" class="tag-3d tag-astro">⚠️ Límite Humano Astronauta</div>
+        </div>
+
+        <!-- Panel Izquierdo: HUD + Medidor de Peligro de Radiación + Lectores -->
+        <div id="left-3d" class="ui-auto">
+            <div class="panel-box" id="hud-box">
+                <div class="panel-title" style="color:var(--accent-green); margin-bottom:4px;">HUD SIMULADOR ROVER A*</div>
+                <div id="hud-text">Estado: Clic izquierdo en el terreno 3D para elegir el punto A</div>
+            </div>
+
+            <div class="panel-box" id="rad-danger-box">
+                <div class="panel-title" style="color:var(--accent-purple); display:flex; justify-content:space-between;">
+                    <span>☢️ MEDIDOR DE PELIGRO DE RADIACIÓN</span>
+                    <b id="rad-meter-level" style="color:var(--accent-green);">NIVEL: BAJO</b>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; font-family:'Courier New',monospace;">
+                    <span>Tasa Local: <b id="rad-meter-val">0.65 mSv/km</b></span>
+                    <span>Dosis Ruta A➔B: <b id="rad-route-total">0.0 mSv</b></span>
+                </div>
+                <div class="rad-bar-bg">
+                    <div id="rad-meter-fill"></div>
+                </div>
+                <div class="astro-box">
+                    <div style="color:var(--accent-lime); font-weight:700; margin-bottom:2px;">
+                        👨‍🚀 Parámetro de Supervivencia de Astronauta:
+                    </div>
+                    <div id="astro-limit-readout" style="color:#fff; font-weight:600;">
+                        Selecciona A y B para calcular hasta dónde aguantaría un humano.
+                    </div>
+                    <div id="astro-survival-detail" style="color:var(--text-muted); font-size:10px; margin-top:2px;">
+                        Umbral crítico EVA: 150 mSv (incluye radiación por distancia + tiempo de viaje).
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-box">
+                <div class="panel-title" style="color:var(--accent-cyan);">Lectores del Rover en Tiempo Real</div>
+                <div class="sensor-grid">
+                    <div class="sensor-item"><span>POSICIÓN ROVER (KM)</span><b id="s-pos">-- , --</b></div>
+                    <div class="sensor-item"><span>ALTITUD MOLA</span><b id="s-alt">-- m</b></div>
+                    <div class="sensor-item"><span>PENDIENTE LOCAL</span><b id="s-slope">--°</b></div>
+                    <div class="sensor-item"><span>TEMP. SUPERFICIE</span><b id="s-temp">--°C</b></div>
+                    <div class="sensor-item"><span>DOSÍMETRO LOCAL</span><b id="s-rad">-- mSv/km</b></div>
+                    <div class="sensor-item"><span>UNIDAD GEOLÓGICA</span><b id="s-geo">--</b></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Derecho: Capas 3D y Terreno -->
+        <div id="right-3d" class="ui-auto">
+            <div class="panel-box">
+                <div class="panel-title">Capa del Terreno 3D (Tecla L)</div>
+                <div class="layer-btn-grid">
+                    <button class="l3d-btn active" data-l3d="0">1. Costo + Bloqueos</button>
+                    <button class="l3d-btn" data-l3d="1">2. ☢️ Zonas Radiación</button>
+                    <button class="l3d-btn" data-l3d="2">3. Geología SIM3292</button>
+                    <button class="l3d-btn" data-l3d="3">4. Pendiente</button>
+                    <button class="l3d-btn" data-l3d="4">5. Altura MOLA</button>
+                    <button class="l3d-btn" data-l3d="5">6. Mapa Térmico</button>
+                </div>
+            </div>
+
+            <div class="panel-box">
+                <div class="panel-title">Geometría y Sensores</div>
+                <div class="param-row">
+                    <span>Pendiente Máx: <b id="lbl-slmax">22°</b></span>
+                    <input type="range" id="rng-slmax" min="10" max="35" step="1" value="22">
+                </div>
+                <div class="param-row">
+                    <span>Alcance Sensor: <b id="lbl-sens">18 km</b></span>
+                    <input type="range" id="rng-sens" min="8" max="45" step="1" value="18">
+                </div>
+                <div class="param-row">
+                    <span>Exageración 3D: <b id="lbl-exag">1.2x</b></span>
+                    <input type="range" id="rng-exag" min="0.5" max="2.5" step="0.1" value="1.2">
+                </div>
+                <div style="display:flex; gap:6px; margin-top:8px;">
+                    <button class="btn-top" id="btn-reset-sim" style="flex:1; font-size:11px;">↺ Reiniciar A/B (R)</button>
+                    <button class="btn-cta" id="btn-return-2d" style="flex:1; font-size:11px;">🗺️ Volver a 2D (H)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= DASHBOARD INFERIOR CENTRAL CONFIGURABLE ================= -->
+        <div id="dashboard-3d" class="ui-auto">
+            <!-- FILA 1: Lectores en Vivo (Distancia, Tiempo A->B, Consumo Energético, Aguante Astronauta, Velocidad Sim, Dosis Acumulada) -->
+            <div class="dash-metrics-row">
+                <div>
+                    <span class="stat-lbl">Distancia Recorrida</span>
+                    <div class="stat-num" id="d-dist">0.0 / 0.0 km</div>
+                </div>
+
+                <div>
+                    <span class="stat-lbl">Tiempo Punto A ➔ B</span>
+                    <div class="stat-num" id="d-time" style="color:var(--accent-lime);">0.0 / 0.0 h</div>
+                </div>
+
+                <div>
+                    <span class="stat-lbl">Consumo Energético</span>
+                    <div class="stat-num" id="d-energy" style="color:var(--accent-orange);">0.0 / 0.0 kWh</div>
+                </div>
+
+                <div>
+                    <span class="stat-lbl">Aguante Máx. Astronauta</span>
+                    <div class="stat-num" id="d-astro-km" style="color:var(--accent-purple);">-- km</div>
+                    <div class="astro-dash-bar" title="Porcentaje del límite de radiación del astronauta">
+                        <div id="d-astro-bar-fill"></div>
+                    </div>
+                </div>
+
+                <div style="text-align:center;">
+                    <span class="stat-lbl">Simulación</span>
+                    <div style="font-family:'Courier New',monospace; font-size:15px; font-weight:700; margin:2px 0;" id="d-vel">1.0x</div>
+                    <div style="display:flex; justify-content:center; gap:5px;">
+                        <button class="btn-top" id="btn-v-down" style="padding:1px 9px;">−</button>
+                        <button class="btn-top" id="btn-v-up" style="padding:1px 9px;">+</button>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="stat-lbl">Dosis Acumulada</span>
+                    <div class="stat-num" id="d-rad-cum" style="color:var(--accent-cyan);">0.0 mSv</div>
+                    <button class="btn-top" id="btn-pause-sim" style="width:100%; margin-top:4px; padding:3px; font-size:11px;">⏸ Pausar</button>
+                </div>
+            </div>
+
+            <!-- FILA 2: Configuraciones Directas del Rover (Velocidad Real, Tiempo A->B, Consumo Energético y Límite Astronauta / Modo) -->
+            <div class="dash-config-row">
+                <div class="cfg-card">
+                    <div class="cfg-card-top">
+                        <span>⚡ Consumo Rover:</span>
+                        <b id="lbl-cfg-kwh">0.22 kWh/km</b>
+                    </div>
+                    <input type="range" id="rng-cfg-kwh" min="0.05" max="1.20" step="0.05" value="0.22" title="Configurar consumo energético base del rover por kilómetro">
+                </div>
+
+                <div class="cfg-card">
+                    <div class="cfg-card-top">
+                        <span>🛞 Velocidad Rover:</span>
+                        <b id="lbl-cfg-speed">12.0 km/h</b>
+                    </div>
+                    <input type="range" id="rng-cfg-speed" min="1.0" max="40.0" step="0.5" value="12.0" title="Configurar velocidad física de traslado del rover entre A y B">
+                </div>
+
+                <div class="cfg-card">
+                    <div class="cfg-card-top">
+                        <span>⏱️ Tiempo A ➔ B:</span>
+                        <b id="lbl-cfg-time">-- h</b>
+                    </div>
+                    <input type="range" id="rng-cfg-time" min="1" max="120" step="1" value="15" title="Ajustar el tiempo objetivo para ir de A a B (recalcula la velocidad requerida)">
+                </div>
+
+                <div class="cfg-card">
+                    <div class="cfg-card-top">
+                        <span>👨‍🚀 Límite Rad.:</span>
+                        <b id="lbl-astro-lim" style="color:var(--accent-purple);">150 mSv</b>
+                    </div>
+                    <input type="range" id="rng-astro-lim" min="30" max="500" step="10" value="150" title="Dosis máxima de radiación que soporta el astronauta">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BARRA INFERIOR DE COORDENADAS Y CONTROLES -->
+    <div id="status-bar">
+        <span id="cursor-info">Pasa el cursor sobre el mapa...</span>
+        <span id="controls-info">[Clic Izq: 1º Punto A, 2º Punto B | Clic Der: Peligro / Foco Radiación | L: Capa | R: Reiniciar | H: Mapa 2D]</span>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

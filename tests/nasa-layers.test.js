@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {buildNasaGlobal,buildNasaLocal,nasaPixels,nasaLayers,sampleMarsContinuous} from '../src/nasa/model.js';
+import {createTerrain,sampleElevation} from '../src/terrain/model.js';
+import {makeRouteGrid} from '../src/routing/geometry.js';
+const span=.263671875,lat=-20.1489254,map={site:{lon:-57.7056874,lat},west:-57.7056874-span/2,north:lat+span/2,span,height:24/Math.cos(lat*Math.PI/180),widthKm:span*Math.PI/180*3396.19*Math.cos(lat*Math.PI/180),start:[0,0],isCovered:()=>true};
+test('the five NASA palettes share the same procedural fields and valid pixels',()=>{const data=buildNasaGlobal();assert.equal(data.width,1440);assert.equal(data.lines.length,320);const hashes=new Set();for(const l of nasaLayers){const pixels=nasaPixels(data,l.id);assert.equal(pixels.length,1440*720*4);assert.equal(pixels[3],255);hashes.add(pixels.slice(4000,4040).join())}assert.equal(hashes.size,5);assert.deepEqual(sampleMarsContinuous(20,10),sampleMarsContinuous(20,10))});
+test('display and routes share the NASA local height field with an interpolation halo',()=>{const fields=buildNasaLocal(map),dem={...fields,values:fields.dem,map};assert.ok(Number.isFinite(sampleElevation(dem,map.site)));const model=createTerrain(map,dem);assert.ok(model.indices.length>0);assert.ok(Number.isFinite(model.heightAt(0,0)));const grid=makeRouteGrid(dem,map);assert.equal(grid.values,dem.values);assert.ok(grid.mask.some(Boolean));assert.equal(fields.hotspots.length,3)});

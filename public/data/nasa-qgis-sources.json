@@ -1,0 +1,228 @@
+{
+  "project": "Mapa mars_ver1.qgz",
+  "status": "referenced-files-missing",
+  "layers": [
+    {
+      "name": "a00000002 — GDB_DBTune",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000002.gdbtable|layername=GDB_DBTune",
+      "available": false
+    },
+    {
+      "name": "a00000007 — GDB_ItemRelationshipTypes",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000007.gdbtable|layername=GDB_ItemRelationshipTypes",
+      "available": false
+    },
+    {
+      "name": "a00000006 — GDB_ItemRelationships",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000006.gdbtable|layername=GDB_ItemRelationships",
+      "available": false
+    },
+    {
+      "name": "a00000005 — GDB_ItemTypes",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000005.gdbtable|layername=GDB_ItemTypes",
+      "available": false
+    },
+    {
+      "name": "a00000004 — GDB_Items",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000004.gdbtable|layername=GDB_Items",
+      "available": false
+    },
+    {
+      "name": "a00000003 — GDB_SpatialRefs",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000003.gdbtable|layername=GDB_SpatialRefs",
+      "available": false
+    },
+    {
+      "name": "a00000001 — GDB_SystemCatalog",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000001.gdbtable|layername=GDB_SystemCatalog",
+      "available": false
+    },
+    {
+      "name": "a00000009 — Global_Anno_Internal",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000009.gdbtable|layername=Global_Anno_Internal",
+      "available": false
+    },
+    {
+      "name": "a0000001d — Global_Anno_Internal_npole",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000001d.gdbtable|layername=Global_Anno_Internal_npole",
+      "available": false
+    },
+    {
+      "name": "a00000020 — Global_Anno_Internal_spole",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000020.gdbtable|layername=Global_Anno_Internal_spole",
+      "available": false
+    },
+    {
+      "name": "a0000001b — Global_Anno_Nomenclature_Npole_1",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000001b.gdbtable|layername=Global_Anno_Nomenclature_Npole_1",
+      "available": false
+    },
+    {
+      "name": "a00000019 — Global_Anno_Nomenclature_Npole",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000019.gdbtable|layername=Global_Anno_Nomenclature_Npole",
+      "available": false
+    },
+    {
+      "name": "a0000001e — Global_Anno_Nomenclature_Spole_1",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000001e.gdbtable|layername=Global_Anno_Nomenclature_Spole_1",
+      "available": false
+    },
+    {
+      "name": "a0000001a — Global_Anno_Nomenclature_Spole",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000001a.gdbtable|layername=Global_Anno_Nomenclature_Spole",
+      "available": false
+    },
+    {
+      "name": "a0000000a — Global_Anno_Nomenclature",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000000a.gdbtable|layername=Global_Anno_Nomenclature",
+      "available": false
+    },
+    {
+      "name": "a0000000b — Global_Anno_Units",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000000b.gdbtable|layername=Global_Anno_Units",
+      "available": false
+    },
+    {
+      "name": "a0000001c — Global_Anno_Units_Npole",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000001c.gdbtable|layername=Global_Anno_Units_Npole",
+      "available": false
+    },
+    {
+      "name": "a0000001f — Global_Anno_Units_Spole",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000001f.gdbtable|layername=Global_Anno_Units_Spole",
+      "available": false
+    },
+    {
+      "name": "MARS_NAV_V2_DEMO_Variacion_SINTETICA_mSv_dia",
+      "provider": "gdal",
+      "source": "./MARS_NAV_V2_DEMO_Variacion_SINTETICA_mSv_dia.tif",
+      "available": false
+    },
+    {
+      "name": "Mars_PublishedGeologicMaps_1Mscale_greater",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/Mars_PublishedGeologicMaps_1Mscale_greater/Mars_PublishedGeologicMaps_1Mscale_greater.dbf|layername=Mars_PublishedGeologicMaps_1Mscale_greater",
+      "available": false
+    },
+    {
+      "name": "Mars_PublishedGeologicMaps_1Mscale_greater",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/Mars_PublishedGeologicMaps_1Mscale_greater/Mars_PublishedGeologicMaps_1Mscale_greater.shx|layername=Mars_PublishedGeologicMaps_1Mscale_greater",
+      "available": false
+    },
+    {
+      "name": "Mars_PublishedGeologicMaps_1Mscale_greater",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/Mars_PublishedGeologicMaps_1Mscale_greater/Mars_PublishedGeologicMaps_1Mscale_greater.shp",
+      "available": false
+    },
+    {
+      "name": "a00000027 — SIM3292_Contact_border",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000027.gdbtable|layername=SIM3292_Contact_border",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Contacts",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Contacts.shp",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Contacts",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Contacts.dbf|layername=SIM3292_Global_Contacts",
+      "available": false
+    },
+    {
+      "name": "a0000002c — SIM3292_Global_Contacts",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000002c.gdbtable|layername=SIM3292_Global_Contacts",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Geology",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Geology.shp",
+      "available": false
+    },
+    {
+      "name": "a0000000e — SIM3292_Global_Geology_Labels",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000000e.gdbtable|layername=SIM3292_Global_Geology_Labels",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Geology",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Geology.dbf|layername=SIM3292_Global_Geology",
+      "available": false
+    },
+    {
+      "name": "a0000002d — SIM3292_Global_Geology",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000002d.gdbtable|layername=SIM3292_Global_Geology",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Landing_sites",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Landing_sites.shp",
+      "available": false
+    },
+    {
+      "name": "a0000000f — SIM3292_Global_Landing_sites",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000000f.gdbtable|layername=SIM3292_Global_Landing_sites",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Landing_sites",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Landing_sites.dbf|layername=SIM3292_Global_Landing_sites",
+      "available": false
+    },
+    {
+      "name": "a00000025 — SIM3292_Global_Structure",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a00000025.gdbtable|layername=SIM3292_Global_Structure",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Structure",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Structure.shp",
+      "available": false
+    },
+    {
+      "name": "SIM3292_Global_Structure",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Structure.dbf|layername=SIM3292_Global_Structure",
+      "available": false
+    },
+    {
+      "name": "a0000002e — Unit_Description",
+      "provider": "ogr",
+      "source": "./sim3292_database/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_geodatabase.gdb/a0000002e.gdbtable|layername=Unit_Description",
+      "available": false
+    }
+  ]
+}

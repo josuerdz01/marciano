@@ -269,3 +269,7 @@ La carcasa retro del tablero mantiene tamaño y controles, con relleno translúc
 ### Destino directo desde el rover
 
 En el terreno local, un clic normal elige B y abre «Ir», sin seleccionar A ni activar antes un modo de inicio. A se ajusta a la celda con datos de la posición más reciente del rover. «Destino», «Cambiar B» y el panel Misión comparten ese inicio automático; se retiraron los controles para elegir A manualmente. Las consultas geológicas y la selección explícita de una parada conservan prioridad. El mapa global sigue cargando regiones al hacer clic, y los lugares conocidos conservan su navegación. El recálculo durante un viaje mantiene la base original para el retorno.
+
+### Cámara que acompaña al rover
+
+En el área local, el objetivo y la cámara se desplazan juntos hacia el rover durante el avance manual o por ruta, conservando distancia de zoom y orientación. La aproximación amortiguada evita saltos y termina suavemente al detenerse. Las transiciones de vista y el mapa global tienen prioridad y suspenden el seguimiento; se puede seguir orbitando o cambiando el zoom. Movimiento reducido usa seguimiento inmediato. No cambia la geometría ni los cálculos de ruta. El rover sigue siendo simbólico: ancho visible aproximado = 1.49 × 0.32 unidades de escena × ancho regional en metros / 24; no representa una dimensión física fija.

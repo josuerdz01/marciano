@@ -209,3 +209,11 @@ La consola principal se reduce a 400 px de ancho y ~200 px de alto, con carcasa 
 QA visual: inicio desde Destino, cambios de ritmo 2 → 3 km/h, trabajo científico en marcha con recálculo, llegada, reinicio, pausa y minimizar/abrir la consola. Se verificaron los cuatro parámetros secundarios y la aguja enlazada al movimiento real de la simulación. No se modificaron el DEM ni el algoritmo A*.
 
 QA de la fila visible: edición directa de los cuatro inputs, velocidad 2 → 3 km/h durante el viaje, pausa por presupuesto de 30 min y reanudación después de devolverlo a 240 min.
+
+### Antena luminosa y flexible
+
+Durante desplazamiento real, la antena mantiene un nivel luminoso de base y un pulso de hasta 12.18 de emisión (antes el máximo era 4.18). El halo aumenta hasta 1.15 unidades locales y una luz puntual suave ilumina el propio rover. Al detenerse, luz y halo se atenúan hasta apagarse, conservando sólo la emisión tenue de reposo.
+
+El mástil se divide en dos tramos y flexiona con resortes amortiguados a partir de las velocidades de cabeceo/balanceo de la suspensión y su aceleración vertical. No usa oscilación aleatoria ni un bucle de balanceo en reposo; el terreno visible sigue determinando el apoyo de las ruedas. Con movimiento reducido se suaviza la flexión y se usa luz constante durante el avance. La respuesta es visual y simbólica, limitada por la resolución del DEM.
+
+QA: pruebas de reposo sobre suelo plano, respuesta a pendientes/baches, amortiguación, límites de flexión, movimiento reducido y luz en marcha/reposo. En navegador se observaron emisiones de 11.285 y 12.179 durante el avance, cambios de flexión asociados al relieve y emisión 0.180 sin halo al pausar.

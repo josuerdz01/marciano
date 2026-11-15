@@ -37,3 +37,19 @@ En Terreno 3D se carga una base fotográfica georreferenciada a la misma ventana
 Primero se publica la imagen de color y después el detalle. Un fallo remoto conserva la vista y no cambia ni reinicia la misión. El control «Intensidad de capas» mezcla la capa analítica seleccionada encima de la fotografía (28 % inicial). Las estructuras, focos y sitios permanecen sobre el terreno. Las imágenes son observaciones orbitales reales; el relieve de este modo sigue siendo el escenario aportado, de modo que sus cráteres fotográficos no deben interpretarse como geometría medida.
 
 La composición cercana se prepara a 3072×3072, seleccionando un nivel CTX acorde a ese tamaño (aproximadamente 5 m/píxel en las latitudes de aterrizaje). Se acota a 64 teselas como máximo por ventana y cuatro descargas concurrentes por capa. Viking aporta el color regional, no detalle cromático a resolución CTX.
+
+## Tablero y recursos de misión
+
+El tablero conserva la silueta trapezoidal de Marsiano y su vidrio, ampliado para integrar seis lecturas locales: posición X/Y en km desde la esquina SO, altitud del campo numérico, pendiente física, temperatura estimada del escenario, índice relativo de radiación y código geológico demostrativo. No se etiqueta la altitud sintética como MOLA ni el índice del mapa como mSv/km.
+
+Los controles de consumo por distancia y capacidad de batería alimentan un acumulador de kWh: cambiar el consumo no reescribe lo ya gastado. La proyección incluye camino restante y retorno. Al agotarse la batería, el escenario pausa el avance; se puede ajustar la capacidad y continuar. El objetivo de tiempo restante A→B modifica la velocidad dentro del rango soportado y usa el recálculo existente. El factor de simulación cambia la velocidad del reloj de avance, conservando la relación entre distancia, energía y minutos simulados. La simulación inicia con los parámetros anteriores (2 km/h y ×120); batería, consumo y exposición son presupuestos configurables sin calibración del vehículo o del traje.
+
+El astronauta conserva el círculo de O₂ e incorpora autonomía, dosis simulada humana en mSv, margen del umbral y alcance teórico a velocidad/tasa constantes, sin garantía de retorno. El corazón es rojo y parpadea por O₂ ≤20 % o dosis ≥umbral configurado; se respeta movimiento reducido. Tasa y umbral de exposición son un escenario independiente, sin diagnóstico ni tolerancia médica. No se convierten la concentración de torio, el índice sintético del mapa ni la dosis electrónica en exposición humana.
+
+### Consola compacta y presentación frontal
+
+La consola compacta conserva la silueta original, el tacómetro y todas las lecturas locales. Consumo, velocidad y tiempo A→B se ajustan con barras y un punto interactivo; el cambio se aplica al soltar el control o terminar una acción de teclado, evitando recalcular durante cada movimiento del puntero. Los presupuestos de misión y capacidad de batería permanecen como pequeños campos en una fila.
+
+El medidor con icono de radiación se concentra en el astronauta, con barra verde–amarillo–naranja–rojo–magenta respecto al umbral del escenario. El umbral se edita junto a su tasa en los ajustes del astronauta. La lectura local del rover sigue siendo un índice relativo sin icono dosimétrico.
+
+El enfoque de salida interpola distancia, elevación y orientación hacia el frente del vehículo por el arco más corto. Solo cuando termina se libera la secuencia de saludo, abordaje y avance. El encuadre reserva espacio para la consola sin alterar la posición geográfica del rover.

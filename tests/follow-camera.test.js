@@ -10,3 +10,5 @@ test('driving view smoothly settles at the reference elevation',()=>{assert.equa
 
 import {departureWave} from '../src/rover/pilotMotion.js';
 test('departure greeting raises and lowers the arm before climbing',()=>{assert.equal(departureWave(0),0);assert.equal(departureWave(.5),1);assert.equal(departureWave(1.8),0);assert.equal(departureWave(4),0)});
+import {journeyCameraBearing} from '../src/rover/followCamera.js';
+test('departure camera presents the vehicle front before the greeting, without an angle jump',()=>{for(const [start,front]of [[2.5,0],[-2.9,2.9],[3.12,-3.12]]){assert.equal(journeyCameraBearing(start,front,0),start);const end=journeyCameraBearing(start,front,2.2);assert.ok(Math.abs(Math.atan2(Math.sin(end-front),Math.cos(end-front)))<1e-10);assert.ok(Math.abs(end-start)<=Math.PI+1e-10);assert.ok(Math.abs(journeyCameraBearing(start,front,.001)-start)<.00001)}});

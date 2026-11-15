@@ -65,3 +65,6 @@ La velocidad y el objetivo de duración actualizan el recorrido activo sin invoc
 
 ### Tablero compacto y tiempos del piloto
 Pendiente máxima y capacidad de batería se editan con deslizantes en la columna situada bajo Geología. Los tres supuestos numéricos de misión y consumo/velocidad/duración comparten una sola fila inferior. Con ruta activa (incluida pausa o recálculo), rover y astronauta conservan sus monitores visibles también en vista panorámica. Saludo 1.15 s, subida 2.8 s y bajada 2.5 s; se conserva enfoque → saludo con mano levantada → subida → avance, y la escalera se guarda al entrar. La interpolación continua de la trayectoria permanece intacta.
+
+### Tablero rectangular y controles acoplados
+El contenedor del rover pasa de carcasa SVG trapezoidal a un rectángulo liquid glass con radio de 22 px. El resumen y controles de ruta se montan una sola vez dentro de la misma consola, encima del tablero, con una unión lateral cóncava y 1 px de solapamiento para evitar huecos. Los avisos de riesgo/ajustes siguen accesibles en un desplegable compacto. El encuadre de cámara toma la consola completa (incluida su pestaña), de modo que no cubra al rover.

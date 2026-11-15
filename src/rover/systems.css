@@ -61,3 +61,27 @@
 .rover-cockpit .energy-projection{margin-bottom:4px}.rover-cockpit .rover-sensor-bank{margin-bottom:3px}
 .app.panel-open .rover-instruments.is-route-active>.rover-cockpit{opacity:1;pointer-events:auto}
 @media(max-width:1000px){.rover-cockpit .retro-instruments{grid-template-columns:minmax(90px,1.2fr)66px minmax(75px,.8fr)minmax(95px,1fr);gap:5px}.rover-cockpit .retro-speedometer>svg{width:66px;height:56px}.rover-cockpit .retro-speed{top:35px;font-size:12px}.rover-cockpit .speed-target{top:53px}.cockpit-bottom{gap:9px;grid-template-columns:1fr 1.1fr}.cockpit-bottom .cockpit-sliders{gap:7px}.cockpit-terrain-controls .mission-slider>span{gap:2px}.cockpit-terrain-controls .mission-slider{font-size:5.5px}}
+
+/* Rectangular glass console with a route tab fused to its upper edge. */
+.rover-instruments>.rover-console{grid-column:1;grid-row:1;position:relative;min-width:0;pointer-events:auto;display:flex;flex-direction:column;align-items:stretch}
+.rover-console>.rover-cockpit{position:relative;inset:auto;transform:none;width:100%;max-width:none;border-radius:22px;filter:none}
+.rover-console>.rover-cockpit:before{clip-path:none;border-radius:inherit;border:1px solid #e0f0c92b;box-shadow:inset 0 1px 0 #f2ffe013,0 8px 22px #07100a25}
+.rover-console>.rover-cockpit .retro-content{padding:11px 18px 13px}
+.rover-console .cockpit-fold{right:15px}
+.rover-instruments:not(.is-visible)>.rover-console{opacity:0;visibility:hidden;pointer-events:none}
+.rover-console>.quick-route-summary.is-docked{position:relative;inset:auto;align-self:flex-end;max-width:100%;width:min(420px,80%);margin:0 12px -1px 0;padding:10px 14px 8px;border-radius:22px 22px 0 0;border-bottom:0;background:var(--instrument-glass);box-shadow:none;z-index:2;overflow:visible}
+.quick-route-summary.is-docked:before{content:"";position:absolute;width:22px;height:22px;left:-22px;bottom:0;background:var(--instrument-glass);-webkit-mask:radial-gradient(circle at 0 0,transparent 21px,#000 22px);mask:radial-gradient(circle at 0 0,transparent 21px,#000 22px);pointer-events:none}
+.quick-route-summary.is-docked .quick-route-main{gap:12px}
+.quick-route-summary.is-docked .quick-route-main>div{min-width:110px}
+.quick-route-summary.is-docked .quick-route-main strong{font-size:11px}
+.quick-route-summary.is-docked .quick-route-main small{margin-top:3px;font-size:9px}
+.quick-route-summary.is-docked .icon{width:28px;height:28px}
+.route-dock-notices{margin-top:6px;border-top:1px solid var(--retro-line);padding-top:5px}
+.route-dock-notices>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:9px;color:#e4c591}
+.route-dock-notices>summary::-webkit-details-marker{display:none}
+.route-dock-notices>summary>span{font-size:8px;color:var(--muted);white-space:nowrap}
+.route-dock-notices .quick-route-adjustments{margin-top:6px;padding-top:6px}
+.app.panel-open .rover-console>.rover-cockpit{opacity:1;pointer-events:auto}
+@media(max-width:1000px){.rover-console>.rover-cockpit .retro-content{padding:10px 13px 12px}.rover-console>.quick-route-summary.is-docked{width:min(390px,90%);margin-right:10px}.quick-route-summary.is-docked .quick-route-main{gap:9px}}
+
+.rover-console{--retro-line:#c6d1ab25}

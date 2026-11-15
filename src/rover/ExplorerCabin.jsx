@@ -1,5 +1,5 @@
 import {ladderDeployment} from './boarding';
-import {pilotPath,waveEnvelope,departureWave} from './pilotMotion';
+import {pilotPath,waveEnvelope,departureWave,greetingArm} from './pilotMotion';
 import React,{useRef} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {RoundedBox} from '@react-three/drei';
@@ -21,9 +21,9 @@ export default function ExplorerCabin({boarding,chassis}){
   turn.current.setFromAxisAngle(vertical.current,-Math.PI/2*climb);pilot.current.quaternion.multiply(turn.current);
   body.current.rotation.z=-.09*climb+.025*greeting;
   head.current.rotation.z=.035*greeting;
-  arm.current.rotation.set(-.25*climb,0,.18+greeting*2.05+.6*climb);
-  elbow.current.rotation.z=-.45*greeting-.55*climb;
-  hand.current.rotation.z=greeting*Math.sin(elapsed*5.5)*.27;
+  const salute=greetingArm(greeting,elapsed,climb);arm.current.rotation.set(-.25*climb,0,salute.shoulder);
+  elbow.current.rotation.z=salute.elbow;
+  hand.current.rotation.z=salute.wrist;
   leftArm.current.rotation.set(-.25*climb,0,-.18-.65*climb);
   legs.current.forEach((leg,i)=>{const stride=Math.sin(step+i*Math.PI);if(leg)leg.rotation.x=-1.1*(1-pose.stand)+stride*.28*climb;if(knees.current[i])knees.current[i].rotation.x=Math.max(0,-stride)*.55*climb});
   const deployment=ladderDeployment(progress);ladder.current.visible=deployment>.001;ladder.current.scale.set(.15+.85*deployment,(.36-outside.y)/.82*(.08+.92*deployment),1);ladder.current.position.y=.28+.08*deployment;

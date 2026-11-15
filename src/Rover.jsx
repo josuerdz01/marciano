@@ -24,7 +24,6 @@ export default function Rover({map,terrainModel,moving,onPosition,drive=[0,0],ro
   if(!suspension.current)suspension.current={height:{value:support.height,velocity:0},pitch:{value:support.pitch,velocity:0},roll:{value:support.roll,velocity:0}};
   const pose=suspension.current;pose.height=springStep(pose.height,support.height,dt,5,.82);pose.pitch=springStep(pose.pitch,support.pitch,dt,3.5,.8);pose.roll=springStep(pose.roll,support.roll,dt,3.5,.8);
   root.current.position.set(pos.current[0],pose.height.value,pos.current[1]);root.current.rotation.y=yaw.current;chassis.current.rotation.set(pose.pitch.value,0,pose.roll.value);
-  root.current.updateWorldMatrix(true,true);
   const sideX=pos.current[0]+1.35*roverScale*Math.cos(yaw.current),sideZ=pos.current[1]-1.35*roverScale*Math.sin(yaw.current),ground=heightAt(sideX,sideZ);
   boarding.current.outside.copy(chassis.current.worldToLocal(new THREE.Vector3(sideX,ground??pose.height.value-.5*roverScale,sideZ)));boarding.current.outside.y-=.015;
 

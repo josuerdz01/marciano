@@ -14,3 +14,12 @@ test('pause cancels departure and resuming waits for focus again',()=>{
  const paused=stepDeparture({phase:'greeting',greeting:.5},false,1,false,.05);
  assert.equal(paused.phase,'idle');assert.equal(stepDeparture(paused,true,1,false,.05).phase,'focus');
 });
+
+import {pilotPath,greetingArm} from '../src/rover/pilotMotion.js';
+test('climbing keeps a continuous, nonzero velocity through intermediate ladder waypoints',()=>{
+ const outside={x:1.35,y:-.46,z:0},h=1e-5;
+ for(const p of [.47,.6,.73]){const a=pilotPath(p-h,outside),b=pilotPath(p,outside),c=pilotPath(p+h,outside),left=(b.x-a.x)/h,right=(c.x-b.x)/h;assert.ok(left>.1);assert.ok(Math.abs(left-right)<.01)}
+});
+test('full greeting raises the palm above the helmet',()=>{
+ for(let t=0;t<8;t+=.1){const a=greetingArm(1,t),palmTop=.65-.17*Math.cos(a.shoulder)-.16*Math.cos(a.shoulder+a.elbow)+.075;assert.ok(palmTop>.98)}
+});

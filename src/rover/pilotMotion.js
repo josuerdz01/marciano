@@ -21,6 +21,6 @@ export function pilotPath(progress,outside){
 }
 export function waveEnvelope(seconds){const p=((seconds%8)+8)%8;return ease(p/.8)*(1-ease((p-3.5)/1));}
 
-export function departureWave(seconds){return ease(seconds/.35)*(1-ease((seconds-1.25)/.55))}
+export function departureWave(seconds){return ease(seconds/.25)*(1-ease((seconds-.75)/.4))}
 
 export function greetingArm(greeting,seconds,climb=0){return{shoulder:.18+greeting*2.65+.6*climb,elbow:greeting*(.15+.14*Math.sin(seconds*5.5))-.55*climb,wrist:greeting*Math.sin(seconds*5.5)*.22}}

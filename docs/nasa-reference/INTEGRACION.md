@@ -62,3 +62,6 @@ El enfoque de salida interpola distancia, elevación y orientación hacia el fre
 
 ### Velocidad sin reiniciar el viaje
 La velocidad y el objetivo de duración actualizan el recorrido activo sin invocar A*, cambiar su identidad ni alternar `running`. Conservan distancia, tiempo consumido, posición, base y fase del astronauta. Si el nuevo ritmo requiere más presupuesto, se amplía solo el tiempo disponible hasta 720 min, sin sobrescribir la velocidad elegida. Un recorrido que aun así no cabe se pausa con un mensaje explícito. Los recálculos geométricos siguen reservados a pendiente, obstáculos y política de riesgo, conservando la intención de reanudar ante ediciones sucesivas.
+
+### Tablero compacto y tiempos del piloto
+Pendiente máxima y capacidad de batería se editan con deslizantes en la columna situada bajo Geología. Los tres supuestos numéricos de misión y consumo/velocidad/duración comparten una sola fila inferior. Con ruta activa (incluida pausa o recálculo), rover y astronauta conservan sus monitores visibles también en vista panorámica. Saludo 1.15 s, subida 2.8 s y bajada 2.5 s; se conserva enfoque → saludo con mano levantada → subida → avance, y la escalera se guarda al entrar. La interpolación continua de la trayectoria permanece intacta.

@@ -45,3 +45,19 @@
 /* The gentler housing no longer needs deep lateral gutters. */
 .rover-cockpit .retro-content{padding-left:4.5%;padding-right:4.5%}
 .obstacle-marker{border:1px solid #efb46e99;background:#26251bd9;color:#ffe2ac;width:25px;height:25px;border-radius:50%;font-size:19px;line-height:1;cursor:pointer}.obstacle-radius{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:11px;color:var(--muted)}.obstacle-radius input{grid-column:1/-1;width:100%;accent-color:var(--accent)}.obstacle-actions{display:flex;gap:18px;margin-top:10px}.route-radiation-alert{color:#f6d598;border-top-color:#e9b45e55}
+
+/* Use the empty area under Geology for terrain/battery controls; one compact lower row. */
+.rover-cockpit .retro-content{padding-top:8px;padding-bottom:14px}
+.rover-cockpit .retro-instruments{grid-template-columns:minmax(120px,1.3fr)76px minmax(90px,.8fr)minmax(115px,1fr);gap:10px;height:68px;align-items:center}
+.cockpit-terrain-controls{display:grid;gap:5px;align-self:center;min-width:0}
+.cockpit-bottom{display:grid;grid-template-columns:1fr 1.2fr;gap:14px;align-items:center;padding-top:4px;border-top:1px solid var(--retro-line)}
+.rover-cockpit .retro-settings-row{grid-template-columns:repeat(3,minmax(0,1fr));padding:2px 0;margin:0;gap:6px;border-top:0}
+.rover-cockpit .retro-settings-row>label>div{padding:2px 4px}
+.cockpit-bottom .cockpit-sliders{padding:0;gap:10px}
+.rover-cockpit .retro-readouts strong{padding:4px 6px;gap:1px}
+.rover-cockpit .retro-speedometer>svg{width:76px;height:62px}
+.rover-cockpit .retro-speed{top:39px;font-size:14px}.rover-cockpit .speed-target{top:59px;font-size:5.5px}
+.rover-cockpit .retro-journey{gap:2px}.rover-cockpit .retro-status{font-size:7px}.rover-cockpit .retro-margin strong{font-size:12px}
+.rover-cockpit .energy-projection{margin-bottom:4px}.rover-cockpit .rover-sensor-bank{margin-bottom:3px}
+.app.panel-open .rover-instruments.is-route-active>.rover-cockpit{opacity:1;pointer-events:auto}
+@media(max-width:1000px){.rover-cockpit .retro-instruments{grid-template-columns:minmax(90px,1.2fr)66px minmax(75px,.8fr)minmax(95px,1fr);gap:5px}.rover-cockpit .retro-speedometer>svg{width:66px;height:56px}.rover-cockpit .retro-speed{top:35px;font-size:12px}.rover-cockpit .speed-target{top:53px}.cockpit-bottom{gap:9px;grid-template-columns:1fr 1.1fr}.cockpit-bottom .cockpit-sliders{gap:7px}.cockpit-terrain-controls .mission-slider>span{gap:2px}.cockpit-terrain-controls .mission-slider{font-size:5.5px}}

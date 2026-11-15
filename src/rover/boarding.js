@@ -1,7 +1,8 @@
+export const pilotTiming={board:2.8,exit:2.5,greeting:1.15};
 // 1 = standing beside the rover; 0 = seated, canopy closed.
 export function stepBoarding(progress,wantsMotion,seconds,reducedMotion=false){
  if(reducedMotion)return wantsMotion?0:1;
- const step=Math.max(0,seconds)/(wantsMotion?4.4:4);
+ const step=Math.max(0,seconds)/(wantsMotion?pilotTiming.board:pilotTiming.exit);
  return wantsMotion?Math.max(0,progress-step):Math.min(1,progress+step);
 }
 export const mayDrive=progress=>progress<=1e-6;
@@ -16,7 +17,7 @@ export function stepDeparture(state,requested,progress,focused,seconds,reduced=f
  if(!requested)return{phase:'idle',greeting:null,progress:stepBoarding(progress,false,seconds,reduced)};
  if(phase==='idle'||(phase==='focus'&&!focused))return{phase:'focus',greeting:null,progress};
  if(phase==='focus')return{phase:progress>.98&&!reduced?'greeting':'boarding',greeting:progress>.98&&!reduced?0:null,progress};
- if(phase==='greeting'){const greeting=Math.min(1.8,(state.greeting||0)+Math.max(0,seconds));return{phase:greeting>=1.8?'boarding':'greeting',greeting,progress}}
+ if(phase==='greeting'){const greeting=Math.min(pilotTiming.greeting,(state.greeting||0)+Math.max(0,seconds));return{phase:greeting>=pilotTiming.greeting?'boarding':'greeting',greeting,progress}}
  const next=stepBoarding(progress,true,seconds,reduced);
  return{phase:mayDrive(next)?'ready':'boarding',greeting:state.greeting,progress:next};
 }

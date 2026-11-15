@@ -16,4 +16,10 @@ El cálculo de pendiente local usa las distancias físicas de la cuadrícula, si
 
 Las cinco texturas globales se preparan desde el generador a 1440×720 y se codifican como PNG reproducibles durante la compilación. Son texturas de datos, no capturas de pantalla. El cliente descarga esas texturas y no repite el cálculo global en cada visita. El detalle regional se calcula en un worker, con 256 muestras por eje más halo. Los sitios se dibujan mediante badges HTML/SVG de Marsiano, nunca como letras dentro de las imágenes.
 
-El zoom 2D entra en detalle 3D cuando el ancho visible baja de 28°, siguiendo el comportamiento del original. Las muestras más densas mejoran el renderizado del generador; no equivalen a nueva información científica.
+El zoom 2D entra en detalle 3D únicamente al llegar a la escala regional (dos veces el ancho del área local) mediante un gesto manual. Pulsar Explorar restaura el mapa global cenital. Las muestras más densas mejoran el renderizado del generador; no equivalen a nueva información científica.
+
+## Representación regional 3D
+
+La malla usa las posiciones numéricas compartidas con rutas y ruedas. Se trasladaron del original los colores por vértice, el sombreado facetado y la cuadrícula al 5 % de opacidad. La capa de altura utiliza el rango de la región para hacer legibles los accidentes locales; esto cambia la escala de color, no la elevación ni las pendientes. Geología, radiación, sombreado y pendiente tienen representaciones regionales sincronizadas con el selector existente. Los focos se delinean siguiendo la superficie, sin aportar nuevas zonas medidas.
+
+Se conserva la cámara suave de Marsiano, la secuencia de enfoque, saludo y abordaje, y el seguimiento durante el viaje. La cámara cercana respeta una separación mínima del mismo relieve. No se copia la exageración vertical arbitraria del original ni su salto entre celdas redondeadas.

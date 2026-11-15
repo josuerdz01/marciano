@@ -179,7 +179,7 @@ function buildGlobal2DData() {
 
 
 
-function heightCmap(t) {
+export function heightCmap(t) {
     const stops = [
         [0.00, [20, 32, 107]], [0.20, [47, 111, 189]], [0.40, [111, 195, 192]],
         [0.52, [139, 198, 106]], [0.66, [233, 228, 124]], [0.84, [201, 138, 71]], [1.00, [255, 255, 255]]
@@ -197,7 +197,7 @@ function heightCmap(t) {
     return [255, 255, 255];
 }
 
-function radCmap(t) {
+export function radCmap(t) {
     const stops = [
         [0.00, [34, 197, 94]],
         [0.30, [250, 204, 21]],

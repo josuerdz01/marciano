@@ -204,6 +204,8 @@ QA del tablero: 75 pruebas aprobadas y compilación correcta. Las pruebas nuevas
 
 ### Tablero retro compacto
 
-La consola principal se reduce a 400 px de ancho y ~164 px de alto, con carcasa trapezoidal de esquinas redondeadas basada en el boceto. Un velocímetro de aguja muestra la velocidad actual; el ajuste numérico y los botones −/+ bajo la esfera fijan el ritmo. Tiempo disponible y reserva aparecen en ventanillas, junto al estado del viaje, margen y pausa/continuación. El botón de ajustes abre tiempo, reserva, trabajo científico y pendiente máxima sin ocupar el mapa permanentemente. Conserva la cancelación y el recálculo desde el rover, y la aceleración ×120 visible.
+La consola principal se reduce a 400 px de ancho y ~200 px de alto, con carcasa trapezoidal de esquinas redondeadas basada en el boceto. Un velocímetro de aguja muestra la velocidad actual; el ajuste numérico y los botones −/+ bajo la esfera fijan el ritmo. Tiempo disponible, reserva, trabajo científico y pendiente máxima quedan siempre visibles en una fila compacta de inputs. Las ventanillas muestran tiempo de viaje y distancia recorrida, junto al estado, margen y pausa/continuación. Se eliminó el menú de ajustes. Conserva la cancelación y el recálculo desde el rover, y la aceleración ×120 visible.
 
 QA visual: inicio desde Destino, cambios de ritmo 2 → 3 km/h, trabajo científico en marcha con recálculo, llegada, reinicio, pausa y minimizar/abrir la consola. Se verificaron los cuatro parámetros secundarios y la aguja enlazada al movimiento real de la simulación. No se modificaron el DEM ni el algoritmo A*.
+
+QA de la fila visible: edición directa de los cuatro inputs, velocidad 2 → 3 km/h durante el viaje, pausa por presupuesto de 30 min y reanudación después de devolverlo a 240 min.

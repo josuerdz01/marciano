@@ -104,3 +104,16 @@
 .rover-cockpit .retro-instruments .header-dose strong>span{display:block;font-size:7px;margin-top:3px}
 .rover-cockpit .retro-instruments .header-dose small{font-size:6px}
 .rover-cockpit .retro-instruments .header-radiation .radiation-warning{right:-3px;bottom:calc(100% + 12px)}
+/* Breathing room between instruments, mission inputs and the lower bevel. */
+.rover-cockpit .retro-content{padding-top:10px;padding-bottom:16px}
+.rover-cockpit .retro-instruments{height:94px}
+.rover-cockpit .retro-settings-row{padding:11px 6px 9px;gap:9px;margin:0 2px}
+.rover-cockpit .retro-settings-row>label>span{margin-bottom:5px}
+.rover-cockpit .retro-settings-row>label>div{padding:5px 6px}
+.rover-cockpit .retro-footnote{padding-top:8px;margin:0 10px}
+/* Only the live speed and odometer glow; labels and controls stay neutral. */
+.rover-cockpit .retro-speed,.rover-cockpit .retro-readouts>div:last-child strong{transition:color .35s,text-shadow .35s}
+.rover-cockpit.is-running .retro-speed,
+.rover-cockpit.is-running .retro-readouts>div:last-child strong{color:#c9f7a2;text-shadow:0 0 8px rgb(164 229 117 / .25)}
+.rover-cockpit.is-running .retro-needle{color:#c9f7a2}
+@media(prefers-reduced-motion:reduce){.rover-cockpit .retro-speed,.rover-cockpit .retro-readouts>div:last-child strong{transition:none}}

@@ -300,6 +300,8 @@ A/B/C comparten la posición y altura del marcador de suelo; se retiró el despl
 
 ## Piloto, cúpula y faro
 
-El rover original conserva su color liquen y la antena flexible anclada al chasis. Un astronauta con traje permanece junto al vehículo cuando está detenido y saluda. Al iniciar o continuar una ruta, sube durante una transición de tres segundos; la cúpula transparente se cierra antes de habilitar la tracción. Pausar o llegar detiene el movimiento antes de abrir la cúpula y descender. La transición se puede invertir sin saltos y respeta movimiento reducido. El tiempo de embarque no añade distancia ni dosis de avance. Son animaciones simbólicas, no una simulación fisiológica o de presurización.
+El rover original conserva su color liquen y la antena flexible anclada al chasis. Un astronauta con traje permanece junto al vehículo cuando está detenido y saluda. Al iniciar o continuar una ruta, sube durante una transición de aproximadamente cuatro segundos; la cúpula transparente se cierra antes de habilitar la tracción. Pausar o llegar detiene el movimiento antes de abrir la cúpula y descender. La transición se puede invertir sin saltos y respeta movimiento reducido. El tiempo de embarque no añade distancia ni dosis de avance. Son animaciones simbólicas, no una simulación fisiológica o de presurización.
 
 El faro dirige un spotlight hacia abajo en la escena principal del terreno. Una huella luminosa suave se adapta a sus alturas, también en modos de materiales cartográficos; el haz y la cúpula son recursos visuales, no nuevas mediciones científicas.
+
+La escalera lateral tiene cuatro peldaños y pasamanos. La trayectoria del piloto sigue etapas de incorporarse, girar, pisar y descender; el saludo usa entrada y salida suaves con articulación de codo y muñeca.
